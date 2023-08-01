@@ -265,7 +265,32 @@ Expression operator*(const MultType&m,const Expression&expr)
 
 void Expression::simplify()
 {
-    return;
+    if(polynomial_.size()==0)
+        return;
+
+    std::vector<Monomial>new_polynomial;
+    std::sort(polynomial_.begin(),polynomial_.end(),
+    [](const auto&p1,const auto&p2){
+        return p1.var_.index_<p2.var_.index_;
+    });
+    
+    MultType val{};
+    Monomial curr=polynomial_[0];
+
+    for(int i=0;i<polynomial_.size();++i){
+        if(polynomial_[i].var_.index_==curr.var_.index_){
+            val+=polynomial_[i].mult_;
+            continue;
+        }
+        else{
+            new_polynomial.push_back(Monomial{val,curr.var_.name_,curr.var_.index_});
+            val=polynomial_[i].mult_;
+            curr=polynomial_[i];
+        }
+    }
+    new_polynomial.push_back(Monomial{val,curr.var_.name_,curr.var_.index_});
+
+    polynomial_=new_polynomial;
 }
 
 Expression::operator std::string()const

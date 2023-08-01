@@ -9,6 +9,8 @@ public:
         :name_{name},index_{count_}
         {++count_;}
     
+    Var(std::string name,IndexType index)
+        :name_{name},index_{index}{}
     Monomial operator*(const MultType&m)const;//
     Monomial operator/(const MultType&m)const;//
 
@@ -40,6 +42,8 @@ class Monomial
 public:
     Monomial(MultType mult,Var var)
         :mult_{mult},var_{var}{}
+    Monomial(MultType mult,std::string name,IndexType index)
+        :mult_{mult},var_{name,index}{}
 
     Monomial operator*(const MultType&m)const;//
     Monomial operator/(const MultType&m)const;//

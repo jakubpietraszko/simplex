@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using IndexType=unsigned int;
 using BoundType=double;
