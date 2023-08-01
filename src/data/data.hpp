@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 using IndexType=unsigned int;
 using BoundType=double;

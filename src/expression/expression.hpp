@@ -34,6 +34,7 @@ public:
     const IndexType& get_index()const{return index_;}
     const std::string& get_name()const{return name_;}
 
+    friend std::ostream& operator<<(std::ostream& os,const Var&var);
 private:
     inline static IndexType count_=0;
     IndexType index_;
@@ -72,6 +73,8 @@ public:
 
     friend Expression;
 
+    friend std::ostream& operator<<(std::ostream& os,const Monomial&mnm);
+
 private:
     MultType mult_;
     Var var_;
@@ -108,6 +111,7 @@ public:
 
     operator std::string()const;
 
+    friend std::ostream& operator<<(std::ostream&os,const Expression&expr);
 
 private:
     std::vector<Monomial>polynomial_{};

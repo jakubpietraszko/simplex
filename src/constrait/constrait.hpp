@@ -19,6 +19,8 @@ public:
     const ConstraitType& get_c_type()const{return c_type_;}
     const BoundType& get_b_type()const{return bound_;}
 
+    friend std::ostream& operator<<(std::ostream&os,const Constrait&constrait);
+
 private:
     Expression expr_;
     ConstraitType c_type_;
