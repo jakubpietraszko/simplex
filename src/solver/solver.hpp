@@ -7,12 +7,14 @@ class Solver
 public:
     Solver(std::string title)
         :title_{title}{}
-    void maximize(){}
-    void minimize(){}
-    void add_variable(){}
-    void add_constrait(){}
-    void solve(){};
-    void show_result(){}
+    void maximize(const Expression&expr);
+    void minimize(const Expression&expr);
+    void add_variable(const Var&var);
+    void add_constrait(const Constrait&constrait);
+    void solve();
+    std::string show_result();
+
+    operator std::string();
 private:
     std::string title_;
 
