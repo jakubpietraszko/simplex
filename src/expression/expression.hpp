@@ -5,11 +5,11 @@ class Expression;
 class Var
 {
 public:
-    Var(std::string name)//
+    Var(std::string name)//--
         :name_{name},index_{count_}
         {++count_;}
     
-    Var(std::string name,IndexType index)//
+    Var(std::string name,IndexType index)//--
         :name_{name},index_{index}{}
 
     Monomial operator*(const MultType&m)const;//
@@ -26,16 +26,19 @@ public:
     Monomial operator-()const;//
     Var operator+()const;//
 
-    operator Monomial()const;//
-    operator std::string()const;//
+    operator Monomial()const;//--
+    operator std::string()const;//--
 
-    friend Monomial;//
-    friend Expression;//
+    bool operator==(const Var&rhs)const;//--
+    bool operator!=(const Var&rhs)const;//--
 
-    const IndexType& get_index()const{return index_;}//
-    const std::string& get_name()const{return name_;}//
+    friend Monomial;//--
+    friend Expression;//--
 
-    static void reset(){count_=0;}//
+    const IndexType& get_index()const{return index_;}//--
+    const std::string& get_name()const{return name_;}//--
+
+    static void reset(){count_=0;}//--
 
 private:
     inline static IndexType count_=0;
@@ -67,6 +70,9 @@ public:
 
     Monomial operator-()const;//
     Monomial operator+()const;//
+
+    bool operator==(const Monomial&rhs)const;//
+    bool operator!=(const Monomial&rhs)const;//
 
     operator std::string()const;//
 

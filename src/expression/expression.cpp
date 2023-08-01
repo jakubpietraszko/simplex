@@ -69,7 +69,14 @@ Var::operator std::string()const
 {
     return name_+std::to_string(index_);
 }
-
+bool Var::operator==(const Var&rhs)const
+{
+    return name_==rhs.name_ && index_==rhs.index_;
+}
+bool Var::operator!=(const Var&rhs)const
+{
+    return !((*this)==rhs);
+}
 //Monomial
 
 Monomial Monomial::operator*(const MultType&m)const
@@ -146,6 +153,14 @@ Monomial Monomial::operator+()const
 Monomial::operator std::string()const
 {
     return std::to_string(mult_)+"*"+var_.name_+std::to_string(var_.index_);
+}
+bool Monomial::operator==(const Monomial&rhs)const
+{
+    return fabs(mult_-rhs.mult_)<EPSILON && var_==rhs.var_;
+}
+bool Monomial::operator!=(const Monomial&rhs)const
+{
+    return !((*this)==rhs);
 }
 
 //Expression
