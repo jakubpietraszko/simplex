@@ -14,16 +14,22 @@ public:
     void solve();
     std::string show_result();
 
+    bool is_unbounded()const;
+    bool is_unfeasible()const;
+
     operator std::string();
 private:
     std::string title_;
 
-    bool entered_type_;
+    bool entered_type_{false};
     ObjectType objective_type_;
     Expression objective_;
 
     std::vector<Constrait>constraits_;
     std::vector<Var>vars_;
 
-    bool solved_;
+    bool solved_{false};
+
+    bool unbounded_{false};
+    bool unfeasible_{false};
 };
