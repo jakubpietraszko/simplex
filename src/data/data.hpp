@@ -12,3 +12,5 @@ enum class ConstraitType{
 enum class ObjectType{
     MAX,MIN
 };
+
+struct ZERO_DIVISION_ERROR{};

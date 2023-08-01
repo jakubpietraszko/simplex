@@ -20,11 +20,14 @@ public:
     Expression operator-(const Monomial&mon)const;//
     Expression operator-(const Var&var)const;//
 
-    Var operator-()const;//
+    Monomial operator-()const;//
     Var operator+()const;//
 
     operator Monomial()const;//
     operator std::string()const;//
+
+    friend Monomial;
+    friend Expression;
 
 private:
     inline static IndexType count_=0;
@@ -56,6 +59,8 @@ public:
     Monomial operator+()const;//
 
     operator std::string()const;//
+
+    friend Expression;
 
 private:
     MultType mult_;
@@ -93,6 +98,7 @@ public:
 
     operator std::string()const;
 
+
 private:
-    std::vector<Var>polynomial_;
+    std::vector<Monomial>polynomial_{};
 };
