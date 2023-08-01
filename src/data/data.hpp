@@ -15,3 +15,5 @@ enum class ObjectType{
 };
 
 struct ZERO_DIVISION_ERROR{};
+
+struct VAR_DOESNT_EXIST{};
