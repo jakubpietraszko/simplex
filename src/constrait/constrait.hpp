@@ -10,7 +10,7 @@ public:
     {}
 
     Constrait inverse()const;
-    Constrait operator*(const MultType&m);
+    Constrait operator*(const MultType&m)const;
     Constrait& operator*=(const MultType&m);
 
     operator std::string()const;
