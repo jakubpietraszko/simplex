@@ -31,6 +31,9 @@ public:
     friend Monomial;
     friend Expression;
 
+    const IndexType& get_index()const{return index_;}
+    const std::string& get_name()const{return name_;}
+
 private:
     inline static IndexType count_=0;
     IndexType index_;
@@ -63,6 +66,9 @@ public:
     Monomial operator+()const;//
 
     operator std::string()const;//
+
+    const MultType& get_mult()const{return mult_;}
+    const Var& get_var()const{return var_;}
 
     friend Expression;
 

@@ -15,6 +15,10 @@ public:
 
     operator std::string()const;
 
+    const Expression& get_expr()const{return expr_;}
+    const ConstraitType& get_c_type()const{return c_type_;}
+    const BoundType& get_b_type()const{return bound_;}
+
 private:
     Expression expr_;
     ConstraitType c_type_;
