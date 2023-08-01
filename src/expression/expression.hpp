@@ -5,12 +5,13 @@ class Expression;
 class Var
 {
 public:
-    Var(std::string name)
+    Var(std::string name)//
         :name_{name},index_{count_}
         {++count_;}
     
-    Var(std::string name,IndexType index)
+    Var(std::string name,IndexType index)//
         :name_{name},index_{index}{}
+
     Monomial operator*(const MultType&m)const;//
     Monomial operator/(const MultType&m)const;//
 
@@ -28,11 +29,13 @@ public:
     operator Monomial()const;//
     operator std::string()const;//
 
-    friend Monomial;
-    friend Expression;
+    friend Monomial;//
+    friend Expression;//
 
-    const IndexType& get_index()const{return index_;}
-    const std::string& get_name()const{return name_;}
+    const IndexType& get_index()const{return index_;}//
+    const std::string& get_name()const{return name_;}//
+
+    static void reset(){count_=0;}//
 
 private:
     inline static IndexType count_=0;
@@ -44,9 +47,9 @@ class Monomial
 {
 public:
     Monomial(MultType mult,Var var)
-        :mult_{mult},var_{var}{}
+        :mult_{mult},var_{var}{}//
     Monomial(MultType mult,std::string name,IndexType index)
-        :mult_{mult},var_{name,index}{}
+        :mult_{mult},var_{name,index}{}//
 
     Monomial operator*(const MultType&m)const;//
     Monomial operator/(const MultType&m)const;//
@@ -67,10 +70,10 @@ public:
 
     operator std::string()const;//
 
-    const MultType& get_mult()const{return mult_;}
-    const Var& get_var()const{return var_;}
+    const MultType& get_mult()const{return mult_;}//
+    const Var& get_var()const{return var_;}//
 
-    friend Expression;
+    friend Expression;//
 
 private:
     MultType mult_;
@@ -80,33 +83,33 @@ private:
 class Expression
 {
 public:
-    Expression()=default;
-    Expression(const Monomial&mon);
+    Expression()=default;//
+    Expression(const Monomial&mon);//
 
-    Expression operator+(const Var&var)const;
-    Expression operator+(const Monomial&mon)const;
-    Expression operator-(const Var&var)const;
-    Expression operator-(const Monomial&mon)const;
+    Expression operator+(const Var&var)const;//
+    Expression operator+(const Monomial&mon)const;//
+    Expression operator-(const Var&var)const;//
+    Expression operator-(const Monomial&mon)const;//
 
-    Expression& operator+=(const Var&var);
-    Expression& operator+=(const Monomial&mon);
-    Expression& operator-=(const Var&var);
-    Expression& operator-=(const Monomial&mon);
+    Expression& operator+=(const Var&var);//
+    Expression& operator+=(const Monomial&mon);//
+    Expression& operator-=(const Var&var);//
+    Expression& operator-=(const Monomial&mon);//
 
-    Expression operator*(const MultType&m)const;
-    Expression& operator*=(const MultType&m);
+    Expression operator*(const MultType&m)const;//
+    Expression& operator*=(const MultType&m);//
 
-    Expression operator/(const MultType&m)const;
-    Expression& operator/=(const MultType&m);
+    Expression operator/(const MultType&m)const;//
+    Expression& operator/=(const MultType&m);//
 
-    Expression operator+()const;
-    Expression operator-()const;
+    Expression operator+()const;//
+    Expression operator-()const;//
 
-    friend Expression operator*(const MultType&m,const Expression&expr);
+    friend Expression operator*(const MultType&m,const Expression&expr);//
 
-    void simplify();
+    void simplify();//
 
-    operator std::string()const;
+    operator std::string()const;//
 
 
 private:

@@ -5,19 +5,19 @@
 class Solver
 {
 public:
-    Solver(std::string title)
+    Solver(std::string title)//
         :title_{title}{}
-    void maximize(const Expression&expr);
-    void minimize(const Expression&expr);
-    void add_variable(const Var&var);
-    void add_constrait(const Constrait&constrait);
-    void solve();
-    std::string show_result();
+    void maximize(const Expression&expr);//
+    void minimize(const Expression&expr);//
+    void add_variable(const Var&var);//
+    void add_constrait(const Constrait&constrait);//
+    void solve();//
+    std::string show_result();//
 
-    bool is_unbounded()const;
-    bool is_unfeasible()const;
+    bool is_unbounded()const;//
+    bool is_unfeasible()const;//
 
-    operator std::string();
+    operator std::string();//
 private:
     std::string title_;
 
