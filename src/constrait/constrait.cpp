@@ -40,3 +40,9 @@ Constrait::operator std::string()const
     ret+=std::to_string(bound_);
     return ret;
 }
+
+std::ostream& operator<<(std::ostream&os,const Constrait&constrait)
+{
+    os<<static_cast<std::string>(constrait);
+    return os;
+}

@@ -69,6 +69,11 @@ Var::operator std::string()const
 {
     return name_+std::to_string(index_);
 }
+std::ostream& operator<<(std::ostream&os,const Var&var)
+{
+    os<<static_cast<std::string>(var);
+    return os;
+}
 bool Var::operator==(const Var&rhs)const
 {
     return name_==rhs.name_ && index_==rhs.index_;
@@ -154,6 +159,11 @@ Monomial::operator std::string()const
 {
     return std::to_string(mult_)+"*"+var_.name_+std::to_string(var_.index_);
 }
+std::ostream& operator<<(std::ostream&os,const Monomial&mnm)
+{
+    os<<static_cast<std::string>(mnm);
+    return os;
+}
 bool Monomial::operator==(const Monomial&rhs)const
 {
     return fabs(mult_-rhs.mult_)<EPSILON && var_==rhs.var_;
@@ -162,7 +172,6 @@ bool Monomial::operator!=(const Monomial&rhs)const
 {
     return !((*this)==rhs);
 }
-
 //Expression
 
 Expression::Expression(const Monomial&mon)
@@ -318,4 +327,10 @@ Expression::operator std::string()const
         ret+=static_cast<std::string>(p);
     }
     return ret;
+}
+
+std::ostream& operator<<(std::ostream&os,const Expression&expr)
+{
+    os<<static_cast<std::string>(expr);
+    return os;
 }

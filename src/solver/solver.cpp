@@ -43,9 +43,15 @@ std::string Solver::show_result()
     return "no solved yet";
 }
 
-Solver::operator std::string()
+Solver::operator std::string()const
 {
     std::string ret{};
 
     return ret;
+}
+
+std::ostream& operator<<(std::ostream&os,const Solver&solver)
+{
+    os<<static_cast<std::string>(solver);
+    return os;
 }

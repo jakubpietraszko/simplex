@@ -17,7 +17,9 @@ public:
     bool is_unbounded()const;//
     bool is_unfeasible()const;//
 
-    operator std::string();//
+    operator std::string()const;
+
+    friend std::ostream& operator<<(std::ostream&os,const Solver&solver);
 private:
     std::string title_;
 
