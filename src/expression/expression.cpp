@@ -258,6 +258,7 @@ Expression Expression::operator/(const MultType&m)const
     {
         for(auto&p:expr.polynomial_)
             p/=m;
+        return expr;
     }
     throw ZERO_DIVISION_ERROR{};
         

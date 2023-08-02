@@ -92,37 +92,37 @@ private:
 class Expression
 {
 public:
-    Expression()=default;//
-    Expression(const Monomial&mon);//
+    Expression()=default;//--
+    Expression(const Monomial&mon);//--
 
-    Expression operator+(const Var&var)const;//
-    Expression operator+(const Monomial&mon)const;//
-    Expression operator-(const Var&var)const;//
-    Expression operator-(const Monomial&mon)const;//
+    Expression operator+(const Var&var)const;//--
+    Expression operator+(const Monomial&mon)const;//--
+    Expression operator-(const Var&var)const;//--
+    Expression operator-(const Monomial&mon)const;//--
 
-    Expression& operator+=(const Var&var);//
-    Expression& operator+=(const Monomial&mon);//
-    Expression& operator-=(const Var&var);//
-    Expression& operator-=(const Monomial&mon);//
+    Expression& operator+=(const Var&var);//--
+    Expression& operator+=(const Monomial&mon);//--
+    Expression& operator-=(const Var&var);//--
+    Expression& operator-=(const Monomial&mon);//--
 
-    Expression operator*(const MultType&m)const;//
+    Expression operator*(const MultType&m)const;//--
     Expression& operator*=(const MultType&m);//
 
-    Expression operator/(const MultType&m)const;//
+    Expression operator/(const MultType&m)const;//--
     Expression& operator/=(const MultType&m);//
 
-    Expression operator+()const;//
-    Expression operator-()const;//
+    Expression operator+()const;//--
+    Expression operator-()const;//--
 
     friend Expression operator*(const MultType&m,const Expression&expr);//
 
-    void simplify();//
+    void simplify();//--
 
-    operator std::string()const;//
+    operator std::string()const;//--
 
-    friend std::ostream& operator<<(std::ostream&os,const Expression&expr);
+    friend std::ostream& operator<<(std::ostream&os,const Expression&expr);//--
 
-    const std::vector<Monomial> get_polynomial()const;
+    const std::vector<Monomial> get_polynomial()const;//--
 
 private:
     std::vector<Monomial>polynomial_{};

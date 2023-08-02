@@ -255,12 +255,12 @@ TEST_F(MonomialTester,mnm_zero_division_error)
 
 //Expression
 
-TEST_F(ExpressionTester,exp_first_ctor)
+TEST_F(ExpressionTester,exp_first_ctor_and_getters)
 {
     auto expr=Expression{};
     ASSERT_TRUE(expr.get_polynomial().empty());
 }
-TEST_F(ExpressionTester,exp_second_ctor)
+TEST_F(ExpressionTester,exp_second_ctor_and_getters)
 {
     Monomial mnm{RANDOM_NUMBER,"x",RANDOM_NUMBER};
     auto expr=static_cast<Expression>(mnm);
@@ -270,33 +270,128 @@ TEST_F(ExpressionTester,exp_second_ctor)
 }
 TEST_F(ExpressionTester,exp_cast_to_string)
 {
-    ASSERT_TRUE(false);
-
+    auto var1=Var{"x",0};
+    auto var2=Var{"x",1};
+    auto mnm1=Monomial{RANDOM_NUMBER,"x",2};
+    auto expr=var1+var2-mnm1;
+    ASSERT_EQ(change_precision(1)+"*x"+std::to_string(0)+
+    " +"+change_precision(1)+"*x"+std::to_string(1)+" "+
+    change_precision(-static_cast<double>(RANDOM_NUMBER))+"*x"+std::to_string(2),
+    static_cast<std::string>(expr));
 }
 TEST_F(ExpressionTester,exp_simplify)
 {
-    ASSERT_TRUE(false);
+    auto var1=Var{"x",0};
+    auto var2=Var{"x",1};
+    auto expr=Expression{var1+var2+var1};
+    ASSERT_EQ(change_precision(2)+"*x0"+" +"+change_precision(1)+"*x1",
+    static_cast<std::string>(expr));
+    expr.simplify();
 
+}
+TEST_F(ExpressionTester,expr_plus_and_minus_unary)
+{
+    auto var1=Var{"x",0};
+    auto var2=Var{"x",1};
+    auto expr=Expression{var1+var2+var1};
+    ASSERT_EQ(static_cast<std::string>(expr),static_cast<std::string>(+expr));
+    ASSERT_EQ(change_precision(-2)+"*x0 "+change_precision(-1)+"*x1",
+    static_cast<std::string>(-expr));
 }
 TEST_F(ExpressionTester,exp_plus_and_minus_no_reference)
 {
-    ASSERT_TRUE(false);
+    auto var1=Var{"x",0};
+    auto mnm1=Monomial{1,var1};
+    auto expr=Expression{};
+    auto expr1=expr+var1;
+    auto expr2=expr-var1;
+    auto expr3=expr+mnm1;
+    auto expr4=expr-mnm1;
+
+    ASSERT_EQ(change_precision(1)+"*x0",
+    static_cast<std::string>(expr1));
+
+    ASSERT_EQ(change_precision(-1)+"*x0",
+    static_cast<std::string>(expr2));
+
+    ASSERT_EQ(change_precision(1)+"*x0",
+    static_cast<std::string>(expr3));
+
+    ASSERT_EQ(change_precision(-1)+"*x0",
+    static_cast<std::string>(expr4));
 
 }
 TEST_F(ExpressionTester,exp_plus_and_minus_reference)
 {
-    ASSERT_TRUE(false);
+    auto var1=Var{"x",0};
+    auto var2=Var{"x",1};
+    auto mnm1=Monomial{1,var1};
+    auto mnm2=Monomial{1,var2};
+    auto expr=Expression{};
+
+    expr+=var1;
+    ASSERT_EQ(change_precision(1)+"*x0",
+    static_cast<std::string>(expr));
+
+    expr-=var2;
+    ASSERT_EQ(change_precision(1)+"*x0 "+change_precision(-1)+"*x1",
+    static_cast<std::string>(expr));
+
+    expr+=mnm1;
+    ASSERT_EQ(change_precision(2)+"*x0 "+change_precision(-1)+"*x1",
+    static_cast<std::string>(expr));
+
+    expr-=mnm2;
+    ASSERT_EQ(change_precision(2)+"*x0 "+change_precision(-2)+"*x1",
+    static_cast<std::string>(expr));
 
 }
 TEST_F(ExpressionTester,exp_mult_and_div_no_reference)
 {
-    ASSERT_TRUE(false);
+    auto var1=Var{"x",0};
+    auto var2=Var{"x",1};
+    auto expr=var1+var2;
 
+    auto expr1=expr*RANDOM_NUMBER;
+    auto expr2=RANDOM_NUMBER*expr;
+    auto expr3=expr/RANDOM_NUMBER;
+
+    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 +"+change_precision(RANDOM_NUMBER)+"*x1",
+    static_cast<std::string>(expr1));
+
+    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 +"+change_precision(RANDOM_NUMBER)+"*x1",
+    static_cast<std::string>(expr2));
+
+    ASSERT_EQ(change_precision(1.0/RANDOM_NUMBER)+"*x0 +"+change_precision(1.0/RANDOM_NUMBER)+"*x1",
+    static_cast<std::string>(expr3));
 }
 TEST_F(ExpressionTester,exp_mult_and_div_reference)
 {
-    ASSERT_TRUE(false);
+    auto var1=Var{"x",0};
+    auto var2=Var{"x",1};
+    auto expr=var1+var2;
 
+    expr*=RANDOM_NUMBER;
+    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 +"+change_precision(RANDOM_NUMBER)+"*x1",
+    static_cast<std::string>(expr));
+
+    expr/=2;
+    ASSERT_EQ(change_precision(RANDOM_NUMBER/2.0)+"*x0 +"+change_precision(RANDOM_NUMBER/2.0)+"*x1",
+    static_cast<std::string>(expr));
+}
+TEST_F(ExpressionTester,exp_zero_division_error)
+{
+    auto var1=Var{"x",0};
+    auto var2=Var{"x",1};
+    auto expr=Expression{var1+var2+var1};
+
+    EXPECT_THROW({
+        expr/0;
+    },ZERO_DIVISION_ERROR);
+
+    EXPECT_THROW({
+        expr/=0;
+    },ZERO_DIVISION_ERROR);
 }
 
 //Constrait
