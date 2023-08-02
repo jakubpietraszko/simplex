@@ -157,38 +157,101 @@ TEST_F(VarTester,var_zero_division_error)
 
 TEST_F(MonomialTester,mnm_first_ctor_and_getters)
 {
-    ASSERT_TRUE(false);
-    
+    Var::reset();
+    Var var{"x"};
+    Monomial mnm{RANDOM_NUMBER,var};
+    ASSERT_EQ(var,mnm.get_var());
+    ASSERT_EQ(RANDOM_NUMBER,mnm.get_mult());
 }
 TEST_F(MonomialTester,mnm_second_ctor_and_getters)
 {
-    ASSERT_TRUE(false);
-    
+    Var::reset();
+    Monomial mnm{RANDOM_NUMBER,"x",RANDOM_NUMBER};
+    ASSERT_EQ(RANDOM_NUMBER,mnm.get_mult());
+    ASSERT_EQ("x",mnm.get_var().get_name());
+    ASSERT_EQ(RANDOM_NUMBER,mnm.get_var().get_index());
 }
 TEST_F(MonomialTester,mnm_eq_and_no_eq_operator)
 {
-    ASSERT_TRUE(false);
+    Monomial mnm1{RANDOM_NUMBER,"x",RANDOM_NUMBER};
+    Monomial mnm2{RANDOM_NUMBER,"x",RANDOM_NUMBER};
+    Monomial mnm3{RANDOM_NUMBER+1,"x",RANDOM_NUMBER};
+    ASSERT_EQ(mnm1,mnm2);
+    ASSERT_NE(mnm1,mnm3);
 }
 TEST_F(MonomialTester,mnm_cast_to_string)
 {
-    ASSERT_TRUE(false);
-    
+    Monomial mnm1{RANDOM_NUMBER,"x",RANDOM_NUMBER};
+    Monomial mnm2{-RANDOM_NUMBER,"x",RANDOM_NUMBER+1};
+
+    ASSERT_EQ(change_precision(mnm1.get_mult())+"*x"+std::to_string(RANDOM_NUMBER),
+    static_cast<std::string>(mnm1));
+
+    ASSERT_EQ(change_precision(mnm2.get_mult())+"*x"+std::to_string(RANDOM_NUMBER+1),
+    static_cast<std::string>(mnm2));
 }
 TEST_F(MonomialTester,mnm_mult_and_div_no_reference)
 {
-    ASSERT_TRUE(false);
-    
+    Monomial mnm1{RANDOM_NUMBER,"x",RANDOM_NUMBER};
+    Monomial mnm2=mnm1*RANDOM_NUMBER;
+    Monomial mnm3=RANDOM_NUMBER*mnm1;
+    Monomial mnm4=mnm1/RANDOM_NUMBER;
+
+    Monomial test2{RANDOM_NUMBER*RANDOM_NUMBER,"x",RANDOM_NUMBER};
+    Monomial test3{RANDOM_NUMBER/RANDOM_NUMBER,"x",RANDOM_NUMBER};
+
+    ASSERT_EQ(test2,mnm2);
+    ASSERT_EQ(test2,mnm3);
+    ASSERT_EQ(test3,mnm4);
+}
+TEST_F(MonomialTester,mnm_mult_and_div_reference)
+{
+    Monomial mnm{1,"x",0};
+    Monomial test1{RANDOM_NUMBER*RANDOM_NUMBER,"x",0};
+    ASSERT_EQ(test1,(mnm*=RANDOM_NUMBER)*=RANDOM_NUMBER);
+    ASSERT_EQ(test1,mnm);
+    ASSERT_EQ(test1/RANDOM_NUMBER,mnm/=RANDOM_NUMBER);
+
+}
+TEST_F(MonomialTester,mnm_plus_minus_unary)
+{
+    Monomial mnm{RANDOM_NUMBER,"x",RANDOM_NUMBER};
+    Monomial test1{RANDOM_NUMBER,"x",RANDOM_NUMBER};
+    Monomial test2{-static_cast<double>(RANDOM_NUMBER),"x",RANDOM_NUMBER};
+    ASSERT_EQ(test1,+mnm);
+    ASSERT_EQ(test2,-mnm);
 }
 TEST_F(MonomialTester,mnm_plus_and_minus_no_reference)
 {
-    ASSERT_TRUE(false);
-    
+    Var::reset();
+    Var var{"x",RANDOM_NUMBER};
+    Monomial mnm1{RANDOM_NUMBER,"x",0};    
+    Monomial mnm2{RANDOM_NUMBER,"x",1};
+
+    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 +"+change_precision(RANDOM_NUMBER)+"*x1",
+    static_cast<std::string>(mnm1+mnm2)); 
+
+    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 "+change_precision(-static_cast<double>(RANDOM_NUMBER))+"*x1",
+    static_cast<std::string>(mnm1-mnm2));
+
+    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 +"+change_precision(1)+"*x"+std::to_string(RANDOM_NUMBER),
+    static_cast<std::string>(mnm1+var));    
+
+    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 "+change_precision(-1)+"*x"+std::to_string(RANDOM_NUMBER),
+    static_cast<std::string>(mnm1-var));    
+
 }
-TEST_F(MonomialTester,mnm_mult_and_div_return_reference)
+TEST_F(MonomialTester,mnm_zero_division_error)
 {
-    ASSERT_TRUE(false);
-    
+    Monomial mnm{RANDOM_NUMBER,"x",RANDOM_NUMBER};
+    EXPECT_THROW({
+        mnm/0;
+    },ZERO_DIVISION_ERROR);
+    EXPECT_THROW({
+        mnm/=0;
+    },ZERO_DIVISION_ERROR);
 }
+
 
 //Expression
 

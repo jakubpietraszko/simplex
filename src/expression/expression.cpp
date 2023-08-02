@@ -108,7 +108,10 @@ Monomial& Monomial::operator*=(const MultType&m)
 Monomial& Monomial::operator/=(const MultType&m)
 {
     if(m)
+    {
         mult_/=m;
+        return *this;
+    }
     throw ZERO_DIVISION_ERROR{};
 }
 

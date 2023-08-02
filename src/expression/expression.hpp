@@ -51,38 +51,38 @@ class Monomial
 {
 public:
     Monomial(MultType mult,Var var)
-        :mult_{mult},var_{var}{}//
+        :mult_{mult},var_{var}{}//--
     Monomial(MultType mult,std::string name,IndexType index)
-        :mult_{mult},var_{name,index}{}//
+        :mult_{mult},var_{name,index}{}//--
 
-    Monomial operator*(const MultType&m)const;//
-    Monomial operator/(const MultType&m)const;//
+    Monomial operator*(const MultType&m)const;//--
+    Monomial operator/(const MultType&m)const;//--
 
-    friend Monomial operator*(const MultType&m,const Monomial&mon);//
+    friend Monomial operator*(const MultType&m,const Monomial&mon);//--
 
     Monomial& operator*=(const MultType&m);//
     Monomial& operator/=(const MultType&m);//
 
-    Expression operator+(const Monomial&mon)const;//
-    Expression operator+(const Var&var)const;//
+    Expression operator+(const Monomial&mon)const;//--
+    Expression operator+(const Var&var)const;//--
 
-    Expression operator-(const Monomial&mon)const;//
-    Expression operator-(const Var&var)const;//
+    Expression operator-(const Monomial&mon)const;//--
+    Expression operator-(const Var&var)const;//--
 
-    Monomial operator-()const;//
-    Monomial operator+()const;//
+    Monomial operator-()const;//--
+    Monomial operator+()const;//--
 
-    bool operator==(const Monomial&rhs)const;//
-    bool operator!=(const Monomial&rhs)const;//
+    bool operator==(const Monomial&rhs)const;//--
+    bool operator!=(const Monomial&rhs)const;//--
 
-    operator std::string()const;//
+    operator std::string()const;//--
 
-    const MultType& get_mult()const{return mult_;}//
-    const Var& get_var()const{return var_;}//
+    const MultType& get_mult()const{return mult_;}//--
+    const Var& get_var()const{return var_;}//--
 
-    friend Expression;//
+    friend Expression;//--
 
-    friend std::ostream& operator<<(std::ostream& os,const Monomial&mnm);
+    friend std::ostream& operator<<(std::ostream& os,const Monomial&mnm);//--
 
 private:
     MultType mult_;
