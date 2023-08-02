@@ -257,13 +257,16 @@ TEST_F(MonomialTester,mnm_zero_division_error)
 
 TEST_F(ExpressionTester,exp_first_ctor)
 {
-    ASSERT_TRUE(false);
-
+    auto expr=Expression{};
+    ASSERT_TRUE(expr.get_polynomial().empty());
 }
 TEST_F(ExpressionTester,exp_second_ctor)
 {
-    ASSERT_TRUE(false);
-
+    Monomial mnm{RANDOM_NUMBER,"x",RANDOM_NUMBER};
+    auto expr=static_cast<Expression>(mnm);
+    ASSERT_FALSE(expr.get_polynomial().empty());
+    ASSERT_EQ(1,expr.get_polynomial().size());
+    ASSERT_EQ(mnm,expr.get_polynomial()[0]);
 }
 TEST_F(ExpressionTester,exp_cast_to_string)
 {
