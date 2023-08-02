@@ -166,7 +166,7 @@ std::ostream& operator<<(std::ostream&os,const Monomial&mnm)
 }
 bool Monomial::operator==(const Monomial&rhs)const
 {
-    return fabs(mult_-rhs.mult_)<EPSILON && var_==rhs.var_;
+    return mult_==rhs.mult_ && var_==rhs.var_;
 }
 bool Monomial::operator!=(const Monomial&rhs)const
 {

@@ -12,10 +12,10 @@ public:
     Var(std::string name,IndexType index)//--
         :name_{name},index_{index}{}
 
-    Monomial operator*(const MultType&m)const;//
-    Monomial operator/(const MultType&m)const;//
+    Monomial operator*(const MultType&m)const;//--
+    Monomial operator/(const MultType&m)const;//--
 
-    friend Monomial operator*(const MultType&m,const Var&var);//
+    friend Monomial operator*(const MultType&m,const Var&var);//--
 
     Expression operator+(const Monomial&mon)const;//
     Expression operator+(const Var&var)const;//
@@ -23,8 +23,8 @@ public:
     Expression operator-(const Monomial&mon)const;//
     Expression operator-(const Var&var)const;//
 
-    Monomial operator-()const;//
-    Var operator+()const;//
+    Monomial operator-()const;//--
+    Var operator+()const;//--
 
     operator Monomial()const;//--
     operator std::string()const;//--

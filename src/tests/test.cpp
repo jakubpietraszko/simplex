@@ -64,6 +64,8 @@ TEST_F(VarTester,var_cast_to_string)
 }
 TEST_F(VarTester,var_cast_to_mnm)
 {
+    Var::reset();
+
     Var var{"x",RANDOM_NUMBER};
     Monomial mnm=static_cast<Monomial>(var);
     ASSERT_EQ(1,mnm.get_mult());
@@ -72,21 +74,83 @@ TEST_F(VarTester,var_cast_to_mnm)
 }
 TEST_F(VarTester,var_mult_and_div_no_reference)
 {
+    Var::reset();
+
     Var var{"x",RANDOM_NUMBER};
-    Monomial mnm_mult{1*RANDOM_NUMBER,var};
-    Monomial mnm_div{1/RANDOM_NUMBER,var};
+
+    Monomial mnm_mult{1.0*RANDOM_NUMBER,var};
+    Monomial mnm_div{1.0/RANDOM_NUMBER,var};
+
     ASSERT_EQ(mnm_mult,var*RANDOM_NUMBER);
     ASSERT_EQ(mnm_mult,RANDOM_NUMBER*var);
     ASSERT_EQ(mnm_div,var/RANDOM_NUMBER);
 
 }
+TEST_F(VarTester,var_plus_minus_unary)
+{
+    Var::reset();
+    Var var{"x",RANDOM_NUMBER};
+    Monomial mnm{-1,var};
+    ASSERT_EQ(var,+var);
+    ASSERT_EQ(mnm,-var);
+}
 TEST_F(VarTester,var_plus_and_minus_no_reference)
 {
-    ASSERT_TRUE(false);
+    Var::reset();
+    Var var1{"x"};
+    Var var2{"x"};
+    Var var3{"x"};
+
+    auto NUM1=1.000000;
+    auto NUM2=3.000000;
+
+
+    Monomial mnm1{-NUM1,var1};
+    Monomial mnm2{NUM1,var2};
+    Monomial mnm3{-NUM2,var3};
+
+    auto expr0=static_cast<Expression>(var1);
+
+    auto expr1=var1+var2;
+    auto expr2=var1-var2;
+
+    auto expr3=var1+mnm3;
+    auto expr4=var1-mnm2;
+
+    auto expr5=var1+var2+var3;
+    auto expr6=var1-var2+var3;
+
+    ASSERT_EQ(change_precision(NUM1)+"*x0",
+    static_cast<std::string>(expr0));
+
+    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(NUM1)+"*x1",
+    static_cast<std::string>(expr1));
+
+
+    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(-NUM1)+"*x1",
+    static_cast<std::string>(expr2));
+
+
+    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(-NUM2)+"*x2",
+    static_cast<std::string>(expr3));
+
+    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(-NUM1)+"*x1",
+    static_cast<std::string>(expr4));
+
+
+    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(NUM1)+"*x1 +"+change_precision(NUM1)+"*x2",
+    static_cast<std::string>(expr5));
+
+    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(-NUM1)+"*x1 +"+change_precision(NUM1)+"*x2",
+    static_cast<std::string>(expr6));
 }
 TEST_F(VarTester,var_zero_division_error)
 {
-    ASSERT_TRUE(false);
+    Var::reset();
+    Var var{"x"};
+    EXPECT_THROW({
+        var/0;
+    },ZERO_DIVISION_ERROR);
 }
 
 //Monomial
