@@ -398,28 +398,91 @@ TEST_F(ExpressionTester,exp_zero_division_error)
 
 TEST_F(ConstraitTester,ctr_ctor_and_getters)
 {
-    ASSERT_TRUE(false);
+    auto var1=Var{"x",0};
+    
+    auto var2=Var{"x",1};
+    auto expr=var1+var2;
 
+    auto constrait=Constrait{expr,ConstraitType::EQ,RANDOM_NUMBER};
+
+    ASSERT_EQ(static_cast<std::string>(expr),static_cast<std::string>(constrait.get_expr()));
+    ASSERT_EQ(ConstraitType::EQ,constrait.get_c_type());
+    ASSERT_EQ(RANDOM_NUMBER,constrait.get_b_type());
 }
 TEST_F(ConstraitTester,ctr_cast_to_string)
 {
-    ASSERT_TRUE(false);
+    auto var1=Var{"x",0};
+    auto var2=Var{"x",1};
+    auto expr=var1+var2;
 
+    auto constrait1=Constrait{expr,ConstraitType::EQ,RANDOM_NUMBER};
+    auto constrait2=Constrait{expr,ConstraitType::GE,RANDOM_NUMBER};
+    auto constrait3=Constrait{expr,ConstraitType::LE,RANDOM_NUMBER};
+    
+    ASSERT_EQ(static_cast<std::string>(constrait1.get_expr())+" = "+change_precision(constrait1.get_b_type()),
+    static_cast<std::string>(constrait1));
+
+    ASSERT_EQ(static_cast<std::string>(constrait2.get_expr())+" >= "+change_precision(constrait2.get_b_type()),
+    static_cast<std::string>(constrait2));
+
+    ASSERT_EQ(static_cast<std::string>(constrait3.get_expr())+" <= "+change_precision(constrait3.get_b_type()),
+    static_cast<std::string>(constrait3));
 }
 TEST_F(ConstraitTester,ctr_mult_operator_reference)
 {
-    ASSERT_TRUE(false);
+    auto var1=Var{"x",0};
+    auto var2=Var{"x",1};
+    auto expr=var1+var2;
+
+    auto constrait1=Constrait{expr,ConstraitType::EQ,RANDOM_NUMBER};
+    auto constrait2=Constrait{expr,ConstraitType::GE,RANDOM_NUMBER};
+    auto constrait3=Constrait{expr,ConstraitType::LE,RANDOM_NUMBER};
+
+    constrait1*=2;
+    constrait2*=-2;
+    constrait3*=-2;
+    
+    ASSERT_EQ(static_cast<std::string>(Constrait{expr*2,ConstraitType::EQ,2.0*RANDOM_NUMBER}),
+    static_cast<std::string>(constrait1));
+
+    ASSERT_EQ(static_cast<std::string>(Constrait{-expr*2,ConstraitType::LE,-2.0*RANDOM_NUMBER}),
+    static_cast<std::string>(constrait2));
+
+    ASSERT_EQ(static_cast<std::string>(Constrait{-expr*2,ConstraitType::GE,-2.0*RANDOM_NUMBER}),
+    static_cast<std::string>(constrait3));
 
 }
 TEST_F(ConstraitTester,ctr_mult_operator_no_reference)
 {
-    ASSERT_TRUE(false);
+    auto var1=Var{"x",0};
+    auto var2=Var{"x",1};
+    auto expr=var1+var2;
 
+    auto constrait=Constrait{expr,ConstraitType::LE,RANDOM_NUMBER};
+    auto constrait1=constrait*2;
+    auto constrait2=constrait*(-2);
+
+    ASSERT_EQ(static_cast<std::string>(2*expr)+" <= "+change_precision(RANDOM_NUMBER*2),
+    static_cast<std::string>(constrait1));
+
+    ASSERT_EQ(static_cast<std::string>(-2*expr)+" >= "+change_precision(RANDOM_NUMBER*(-2.0)),
+    static_cast<std::string>(constrait2));
 }
 TEST_F(ConstraitTester,ctr_inverse)
 {
-    ASSERT_TRUE(false);
+    auto var1=Var{"x",0};
+    auto var2=Var{"x",1};
+    auto expr=var1+var2;
+    auto constrait1=Constrait{expr,ConstraitType::LE,RANDOM_NUMBER};
+    auto constrait2=Constrait{expr,ConstraitType::GE,RANDOM_NUMBER};
+    constrait1.inverse();
+    constrait2.inverse();
 
+    ASSERT_EQ(static_cast<std::string>(-1*expr)+" >= "+change_precision(-1.0*RANDOM_NUMBER),
+    static_cast<std::string>(constrait1));
+
+    ASSERT_EQ(static_cast<std::string>(-1*expr)+" <= "+change_precision(-1.0*RANDOM_NUMBER),
+    static_cast<std::string>(constrait2));
 }
 
 //Solver
