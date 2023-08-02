@@ -127,21 +127,21 @@ TEST_F(VarTester,var_plus_and_minus_no_reference)
     static_cast<std::string>(expr1));
 
 
-    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(-NUM1)+"*x1",
+    ASSERT_EQ(change_precision(NUM1)+"*x0 "+change_precision(-NUM1)+"*x1",
     static_cast<std::string>(expr2));
 
 
-    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(-NUM2)+"*x2",
+    ASSERT_EQ(change_precision(NUM1)+"*x0 "+change_precision(-NUM2)+"*x2",
     static_cast<std::string>(expr3));
 
-    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(-NUM1)+"*x1",
+    ASSERT_EQ(change_precision(NUM1)+"*x0 "+change_precision(-NUM1)+"*x1",
     static_cast<std::string>(expr4));
 
 
     ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(NUM1)+"*x1 +"+change_precision(NUM1)+"*x2",
     static_cast<std::string>(expr5));
 
-    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(-NUM1)+"*x1 +"+change_precision(NUM1)+"*x2",
+    ASSERT_EQ(change_precision(NUM1)+"*x0 "+change_precision(-NUM1)+"*x1 +"+change_precision(NUM1)+"*x2",
     static_cast<std::string>(expr6));
 }
 TEST_F(VarTester,var_zero_division_error)
