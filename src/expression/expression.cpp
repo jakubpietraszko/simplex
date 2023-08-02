@@ -308,13 +308,30 @@ void Expression::simplify()
 Expression::operator std::string()const
 {
     std::string ret{};
-    for(const auto&p:polynomial_)
+    if(polynomial_.size()>0)
     {
-        if(p.mult_>0)
-            ret+='+';
-        ret+=static_cast<std::string>(p);
+        for(auto i=0;i<polynomial_.size();++i)
+        {
+            if(i==0 && polynomial_[0].get_mult()>0)
+            {
+                ret+=change_precision(polynomial_[0].get_mult());
+                ret+="*";
+                ret+=polynomial_[0].get_var().get_name();
+                ret+=polynomial_[0].get_var().get_index();
+                continue;
+            }
+            ret+=" ";
+            if(polynomial_[i].get_mult()>0)
+                ret+="+";
+            ret+=change_precision(polynomial_[i].get_mult());
+            ret+="*";
+            ret+=polynomial_[i].get_var().get_name();
+            ret+=polynomial_[i].get_var().get_index();
+
+        }
     }
-    return ret;
+    else
+        return ret;
 }
 
 std::ostream& operator<<(std::ostream&os,const Expression&expr)
