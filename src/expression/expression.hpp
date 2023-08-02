@@ -122,6 +122,8 @@ public:
 
     friend std::ostream& operator<<(std::ostream&os,const Expression&expr);
 
+    const std::vector<Monomial> get_polynomial()const;
+
 private:
     std::vector<Monomial>polynomial_{};
 };
