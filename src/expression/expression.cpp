@@ -332,3 +332,8 @@ std::ostream& operator<<(std::ostream&os,const Expression&expr)
     os<<static_cast<std::string>(expr);
     return os;
 }
+
+const std::vector<Monomial> Expression::get_polynomial()const
+{
+    return polynomial_;
+}
