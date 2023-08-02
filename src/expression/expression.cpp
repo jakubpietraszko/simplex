@@ -151,7 +151,7 @@ Monomial Monomial::operator+()const
 
 Monomial::operator std::string()const
 {
-    return std::to_string(mult_)+"*"+var_.name_+std::to_string(var_.index_);
+    return change_precision(mult_)+"*"+static_cast<std::string>(var_);
 }
 
 std::ostream& operator<<(std::ostream&os,const Monomial&mnm)
@@ -312,22 +312,15 @@ Expression::operator std::string()const
     {
         for(auto i=0;i<polynomial_.size();++i)
         {
-            if(i==0 && polynomial_[0].get_mult()>0)
+            if(i==0)
             {
-                ret+=change_precision(polynomial_[0].get_mult());
-                ret+="*";
-                ret+=polynomial_[0].get_var().get_name();
-                ret+=polynomial_[0].get_var().get_index();
+                ret+=static_cast<std::string>(polynomial_[0]);
                 continue;
             }
-            ret+=" ";
+            ret+=' ';
             if(polynomial_[i].get_mult()>0)
-                ret+="+";
-            ret+=change_precision(polynomial_[i].get_mult());
-            ret+="*";
-            ret+=polynomial_[i].get_var().get_name();
-            ret+=polynomial_[i].get_var().get_index();
-
+                ret+='+';
+            ret+=static_cast<std::string>(polynomial_[i]);
         }
     }
     else
