@@ -2,9 +2,10 @@
 
 //Constrait
 
-Constrait Constrait::inverse()const
+Constrait Constrait::inverse()
 {
-    return (*this)*(-1);
+    (*this)*=(-1);
+    return *this;
 }
 Constrait Constrait::operator*(const MultType&m)const
 {
@@ -32,12 +33,12 @@ Constrait::operator std::string()const
     std::string ret{};
     ret+=static_cast<std::string>(expr_);
     if(c_type_==ConstraitType::EQ)
-        ret+='=';
+        ret+=" = ";
     else if(c_type_==ConstraitType::LE)
-        ret+='<=';
+        ret+=" <= ";
     else if(c_type_==ConstraitType::GE)
-        ret+='>=';
-    ret+=std::to_string(bound_);
+        ret+=" >= ";
+    ret+=change_precision(bound_);
     return ret;
 }
 
