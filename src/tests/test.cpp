@@ -487,58 +487,230 @@ TEST_F(ConstraitTester,ctr_inverse)
 
 //Solver
 
-TEST_F(SolverTester,slv_ctor)
+TEST_F(SolverTester,slv_ctor_and_getters)
 {
-    ASSERT_TRUE(false);
+    auto solver=Solver{"Test"};
+    ASSERT_EQ("Test\nno objective\nsubject to:\nresults:\nunsolved",
+    static_cast<std::string>(solver));
+    ASSERT_EQ(std::string{"Test"},solver.get_name());
+    ASSERT_EQ(0,solver.get_vars().size());
+    ASSERT_EQ(0,solver.get_constraits().size());
+}
+TEST_F(SolverTester,slv_add_var_and_getters)
+{
+    auto solver=Solver{"Test"};
+    auto x0=Var{"x",0};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x0);
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    ASSERT_EQ(3,solver.get_vars().size());
 
 }
-TEST_F(SolverTester,slv_add_var)
+TEST_F(SolverTester,slv_add_pretty_ctr)
 {
-    ASSERT_TRUE(false);
+    auto x0=Var{"x",0};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    ASSERT_EQ(change_precision(1)+"*x0 +"+change_precision(1)+"*x1 +"+change_precision(1)+"*x2"+
+    " = "+change_precision(RANDOM_NUMBER),
+    static_cast<std::string>(x0+x1+x2=RANDOM_NUMBER));
 
+    ASSERT_EQ(change_precision(1)+"*x0 +"+change_precision(1)+"*x1 +"+change_precision(1)+"*x2"+
+    " <= "+change_precision(RANDOM_NUMBER),
+    static_cast<std::string>(x0+x1+x2<=RANDOM_NUMBER));
+
+    ASSERT_EQ(change_precision(1)+"*x0 +"+change_precision(1)+"*x1 +"+change_precision(1)+"*x2"+
+    " >= "+change_precision(RANDOM_NUMBER),
+    static_cast<std::string>(x0+x1+x2>=RANDOM_NUMBER));
 }
-TEST_F(SolverTester,slv_add_ctr)
+TEST_F(SolverTester,slv_add_ctr_and_getters)
 {
-    ASSERT_TRUE(false);
-
+    auto solver=Solver{"Test"};
+    auto x0=Var{"x",0};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x0);
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_constrait(x0+x1+x2<=RANDOM_NUMBER);
+    solver.add_constrait(x0-x1+x2>=RANDOM_NUMBER);
+    solver.add_constrait(-x0+x1-x2=RANDOM_NUMBER);
+    ASSERT_EQ(3,solver.get_constraits().size());
 }
 TEST_F(SolverTester,slv_cast_to_string_no_solved)
 {
-    ASSERT_TRUE(false);
+    auto solver=Solver{"Test"};
+    auto x0=Var{"x",0};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x0);
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_constrait(x0+x1+x2<=RANDOM_NUMBER);
+    solver.add_constrait(x0+x1+x2>=RANDOM_NUMBER*2);
+    solver.maximize(x0+x1);
+    ASSERT_EQ(std::string{"Test\n"}+"maximize "+
+    static_cast<std::string>(x0+x1)+"\n"+
+    "subject to:\n"+static_cast<std::string>(x0+x1+x2<=RANDOM_NUMBER)+
+    +"\n"+static_cast<std::string>(x0+x1+x2>=RANDOM_NUMBER*2)+"\n"+
+    "results:\nunsolved",
+    static_cast<std::string>(solver));
 
 }
 TEST_F(SolverTester,slv_max)
 {
-    ASSERT_TRUE(false);
+    auto solver=Solver{"Test"};
+    auto x0=Var{"x",0};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x0);
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_constrait(x0+x1+x2<=RANDOM_NUMBER);
+    solver.add_constrait(x0+x1+x2>=RANDOM_NUMBER*2);
+    solver.maximize(x0+x1);
+    ASSERT_EQ(std::string{"Test\n"}+"maximize "+
+    static_cast<std::string>(x0+x1)+"\n"+
+    "subject to:\n"+static_cast<std::string>(x0+x1+x2<=RANDOM_NUMBER)+
+    +"\n"+static_cast<std::string>(x0+x1+x2>=RANDOM_NUMBER*2)+"\n"+
+    "results:\nunsolved",
+    static_cast<std::string>(solver));
 
 }
 TEST_F(SolverTester,slv_min)
 {
-    ASSERT_TRUE(false);
+    auto solver=Solver{"Test"};
+    auto x0=Var{"x",0};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x0);
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_constrait(x0+x1+x2<=RANDOM_NUMBER);
+    solver.add_constrait(x0+x1+x2>=RANDOM_NUMBER*2);
+    solver.minimize(x0+x1);
+    ASSERT_EQ(std::string{"Test\n"}+"minimize "+
+    static_cast<std::string>(x0+x1)+"\n"+
+    "subject to:\n"+static_cast<std::string>(x0+x1+x2<=RANDOM_NUMBER)+
+    +"\n"+static_cast<std::string>(x0+x1+x2>=RANDOM_NUMBER*2)+"\n"+
+    "results:\nunsolved",
+    static_cast<std::string>(solver));
 
 }
-TEST_F(SolverTester,slv_solve)
+TEST_F(SolverTester,slv_solved)
 {
-    ASSERT_TRUE(false);
+    auto solver=Solver{"Test"};
+    auto x0=Var{"x",0};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x0);
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.maximize(x0+x1+x2);
+    solver.add_constrait(x0-x1+x2<=10);
+    solver.add_constrait(x0<=20);
+    solver.add_constrait(-x0+x1-x2<=30);
+    solver.add_constrait(x1<=5);
 
+    ASSERT_EQ(std::string{"Test\n"}+"maximize "+
+    static_cast<std::string>(x0+x1+x2)+"\n"+
+    "subject to:\n"+static_cast<std::string>(x0-x1+x2<=10)+
+    +"\n"+static_cast<std::string>(x0<=20)+"\n"+
+    static_cast<std::string>(-x0+x1-x2<=30)+"\n"+
+    static_cast<std::string>(x1<=5)+"\n"+
+    "results:\nunsolved",
+    static_cast<std::string>(solver));
+
+    solver.solve();
+
+    ASSERT_EQ(std::string{"Test\n"}+"maximize "+
+    static_cast<std::string>(x0+x1+x2)+"\n"+
+    "subject to:\n"+static_cast<std::string>(x0-x1+x2<=10)+
+    +"\n"+static_cast<std::string>(x0<=20)+"\n"+
+    static_cast<std::string>(-x0+x1-x2<=30)+"\n"+
+    static_cast<std::string>(x1<=5)+"\n"+
+    "results:\n"+
+    "optimal value = 20\n"+
+    "x0 = 0\n"+
+    "x1 = 5\n"+
+    "x2 = 15\n",
+    static_cast<std::string>(solver));
+    
 }
 TEST_F(SolverTester,slv_return_result)
 {
-    ASSERT_TRUE(false);
-
-}
-TEST_F(SolverTester,slv_cast_to_string_solved)
-{
-    ASSERT_TRUE(false);
-
+    auto solver=Solver{"Test"};
+    auto x0=Var{"x",0};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x0);
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.maximize(x0+x1+x2);
+    solver.add_constrait(x0-x1+x2<=10);
+    solver.add_constrait(x0<=20);
+    solver.add_constrait(-x0+x1-x2<=30);
+    solver.add_constrait(x1<=5);
+    solver.solve();
+    auto res=solver.get_results();
+    ASSERT_EQ(0,solver.get_results()[0]);
+    ASSERT_EQ(5,solver.get_results()[1]);
+    ASSERT_EQ(15,solver.get_results()[2]);
 }
 TEST_F(SolverTester,slv_unbounded)
 {
-    ASSERT_TRUE(false);
+    auto solver=Solver{"Test"};
+    auto x0=Var{"x",0};
+    auto x1=Var{"x",1};
+    solver.maximize(x0+x1);
+    solver.add_variable(x0);
+    solver.add_variable(x1);
+    solver.add_constrait(x0-x1<=1);
+    solver.add_constrait(x1-x0<=1);
 
+    ASSERT_EQ(std::string{"Test\n"}+"maximize: "+static_cast<std::string>(x0+x1)+
+    "\nsubject to:\n"+static_cast<std::string>(x0-x1<=1)+"\n"+
+    static_cast<std::string>(-x0+x1<=1)+"\nresults:\n"+
+    "unsolved",
+    static_cast<std::string>(solver));
+
+    solver.solve();
+    ASSERT_TRUE(solver.is_unbounded());
+    ASSERT_FALSE(solver.is_infeasible());
+
+    ASSERT_EQ(std::string{"Test\n"}+"maximize: "+static_cast<std::string>(x0+x1)+
+    "\nsubject to:\n"+static_cast<std::string>(x0-x1<=1)+"\n"+
+    static_cast<std::string>(-x0+x1<=1)+"\nresults:\n"+
+    "unbounded",
+    static_cast<std::string>(solver));
 }
-TEST_F(SolverTester,slv_unfeasible)
+TEST_F(SolverTester,slv_infeasible)
 {
-    ASSERT_TRUE(false);
+    auto solver=Solver{"Test"};
+    auto x0=Var{"x",0};
+    auto x1=Var{"x",1};
+    solver.maximize(x0+x1);
+    solver.add_variable(x0);
+    solver.add_variable(x1);
+    solver.add_constrait(x0-x1<=-1);
+    solver.add_constrait(x1-x0<=-1);
+    
 
+    ASSERT_EQ(std::string{"Test\n"}+"maximize: "+static_cast<std::string>(x0+x1)+
+    "\nsubject to:\n"+static_cast<std::string>(x0-x1<=-1)+"\n"+
+    static_cast<std::string>(-x0+x1<=-1)+"\nresults:\n"+
+    "unsolved",
+    static_cast<std::string>(solver));
+
+    solver.solve();
+    ASSERT_TRUE(solver.is_infeasible());
+    ASSERT_FALSE(solver.is_unbounded());
+
+    ASSERT_EQ(std::string{"Test\n"}+"maximize: "+static_cast<std::string>(x0+x1)+
+    "\nsubject to:\n"+static_cast<std::string>(x0-x1<=-1)+"\n"+
+    static_cast<std::string>(-x0+x1<=-1)+"\nresults:\n"+
+    "infeasible",
+    static_cast<std::string>(solver));
 }
