@@ -1,5 +1,6 @@
 #include "expression.hpp"
-
+#include "../constrait/constrait.hpp"
+class Constrait;
 //Var
 
 Monomial Var::operator*(const MultType&m)const
@@ -352,4 +353,49 @@ std::ostream& operator<<(std::ostream&os,const Expression&expr)
 const std::vector<Monomial> Expression::get_polynomial()const
 {
     return polynomial_;
+}
+
+Constrait Expression::operator<=(const MultType&m)const
+{
+    return {*this,ConstraitType::LE,m};
+}
+
+Constrait Expression::operator>=(const MultType&m)const
+{
+    return {*this,ConstraitType::GE,m};
+}
+
+Constrait Expression::operator=(const MultType&m)const
+{
+    return {*this,ConstraitType::EQ,m};
+}
+
+Constrait Var::operator<=(const MultType&m)const
+{
+    return {static_cast<Expression>(*this),ConstraitType::LE,m};
+}
+
+Constrait Var::operator>=(const MultType&m)const
+{
+    return {static_cast<Expression>(*this),ConstraitType::GE,m};
+}
+
+Constrait Var::operator=(const MultType&m)const
+{
+    return {static_cast<Expression>(*this),ConstraitType::EQ,m};
+}
+
+Constrait Monomial::operator<=(const MultType&m)const
+{
+    return {static_cast<Expression>(*this),ConstraitType::LE,m};
+}
+
+Constrait Monomial::operator>=(const MultType&m)const
+{
+    return {static_cast<Expression>(*this),ConstraitType::GE,m};
+}
+
+Constrait Monomial::operator=(const MultType&m)const
+{
+    return {static_cast<Expression>(*this),ConstraitType::EQ,m};
 }

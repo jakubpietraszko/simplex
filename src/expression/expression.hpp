@@ -1,5 +1,6 @@
 #pragma once
 #include "../data/data.hpp"
+class Constrait;
 class Monomial;
 class Expression;
 class Var
@@ -41,6 +42,11 @@ public:
     static void reset(){count_=0;}//--
 
     friend std::ostream& operator<<(std::ostream& os,const Var&var);
+
+    Constrait operator<=(const MultType&m)const;
+    Constrait operator>=(const MultType&m)const;
+    Constrait operator=(const MultType&m)const;
+    
 private:
     inline static IndexType count_=0;
     IndexType index_;
@@ -84,6 +90,9 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os,const Monomial&mnm);//--
 
+    Constrait operator<=(const MultType&m)const;
+    Constrait operator>=(const MultType&m)const;
+    Constrait operator=(const MultType&m)const;
 private:
     MultType mult_;
     Var var_;
@@ -123,6 +132,10 @@ public:
     friend std::ostream& operator<<(std::ostream&os,const Expression&expr);//--
 
     const std::vector<Monomial> get_polynomial()const;//--
+
+    Constrait operator<=(const MultType&m)const;
+    Constrait operator>=(const MultType&m)const;
+    Constrait operator=(const MultType&m)const;
 
 private:
     std::vector<Monomial>polynomial_{};
