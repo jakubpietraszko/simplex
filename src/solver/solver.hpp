@@ -1,6 +1,8 @@
 #pragma once
 #include "../data/data.hpp"
 #include "../constrait/constrait.hpp"
+#include "../expression/expression.hpp"
+
 
 class Solver
 {
@@ -12,21 +14,22 @@ public:
     void add_variable(const Var&var);//
     void add_constrait(const Constrait&constrait);//
     void solve();//
-    std::vector<MultType> get_results()const{return results;}
+    std::vector<MultType> get_results()const;
 
-    bool is_unbounded()const{return unbounded_;}//
-    bool is_infeasible()const{return infeasible_;}//
-    bool is_solved()const{return solved_;}
+    bool is_unbounded()const;//
+    bool is_infeasible()const;//
+    bool is_solved()const;
 
     operator std::string()const;
 
     friend std::ostream& operator<<(std::ostream&os,const Solver&solver);
 
-    const std::string& get_name()const{return title_;}
-    const Expression& get_objective()const{return objective_;}
-    const std::vector<Constrait>& get_constraits()const{return constraits_;}
-    const std::vector<Var>& get_vars()const{return vars_;}
-    const MultType optimal_value()const{}
+    const std::string get_name()const;
+    const Expression get_objective()const;
+    const std::vector<Constrait> get_constraits()const;
+    const std::vector<Var> get_vars()const;
+    const MultType optimal_value()const;
+    void show_debug()const;
 private:
     std::string title_;
 
@@ -42,5 +45,16 @@ private:
     bool unbounded_{false};
     bool infeasible_{false};
 
-    std::vector<MultType>results{1,2,3,4,5};
+
+    std::vector<std::vector<MultType>> A{};
+    std::vector<MultType> b{};
+    std::vector<MultType> c{};
+    MultType vi{0};
+    std::vector<MultType> N{};
+    std::vector<MultType> B{};
+    std::vector<MultType> results{};
+
+    void pivot(IndexType a,IndexType b){}
+    void init(){}
+    bool obj_is_positive(){}
 };

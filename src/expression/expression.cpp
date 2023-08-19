@@ -1,5 +1,7 @@
 #include "expression.hpp"
 #include "../constrait/constrait.hpp"
+#include "../data/data.hpp"
+
 class Constrait;
 //Var
 
@@ -161,7 +163,7 @@ Monomial Monomial::operator+()const
 
 Monomial::operator std::string()const
 {
-    return change_precision(mult_)+"*"+static_cast<std::string>(var_);
+    return std::to_string(mult_)+"*"+static_cast<std::string>(var_);
 }
 std::ostream& operator<<(std::ostream&os,const Monomial&mnm)
 {

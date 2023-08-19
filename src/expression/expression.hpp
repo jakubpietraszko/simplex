@@ -1,5 +1,6 @@
 #pragma once
 #include "../data/data.hpp"
+
 class Constrait;
 class Monomial;
 class Expression;

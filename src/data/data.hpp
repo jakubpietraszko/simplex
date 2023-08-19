@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 #include <cassert>
+#include <array>
 
 using IndexType=unsigned int;
 using BoundType=double;

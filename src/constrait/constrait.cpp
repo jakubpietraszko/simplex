@@ -27,7 +27,7 @@ Constrait& Constrait::operator*=(const MultType&m)
 
     return *this;
 }
-
+/*
 Constrait::operator std::string()const
 {
     std::string ret{};
@@ -38,10 +38,10 @@ Constrait::operator std::string()const
         ret+=" <= ";
     else if(c_type_==ConstraitType::GE)
         ret+=" >= ";
-    ret+=change_precision(bound_);
+    //ret+=change_precision(bound_);
     return ret;
 }
-
+*/
 std::ostream& operator<<(std::ostream&os,const Constrait&constrait)
 {
     os<<static_cast<std::string>(constrait);
