@@ -50,12 +50,12 @@ private:
     std::vector<std::vector<MultType>> A{};
     std::vector<MultType> b{};
     std::vector<MultType> c{};
-    MultType vi{0};
+    MultType vi=0;
     std::vector<MultType> N{};
     std::vector<MultType> B{};
     std::vector<MultType> results{};
 
-    void init();
+    bool init();
     bool obj_is_positive(){}
     bool in_c_is_positive()const;
     IndexType chose_positive_c()const;
