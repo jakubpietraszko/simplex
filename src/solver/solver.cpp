@@ -26,10 +26,6 @@ void Solver::add_constrait(const Constrait&constrait)
 }
 bool Solver::in_c_is_positive()const
 {
-    static int aa=0;
-    if(aa==1)
-        return false;
-    aa++;
     for(auto i =0 ;i<c.size();++i){
     if(c[i]>0)
         return true;
