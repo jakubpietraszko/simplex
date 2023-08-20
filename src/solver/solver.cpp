@@ -24,12 +24,30 @@ void Solver::add_constrait(const Constrait&constrait)
 {
     constraits_.push_back(constrait);
 }
+bool Solver::in_c_is_positive()const
+{
+    static int aa=0;
+    if(aa==1)
+        return false;
+    aa++;
+    for(auto i =0 ;i<c.size();++i){
+    if(c[i]>0)
+        return true;
+    }
+    return false;
+}
+IndexType Solver::chose_positive_c()const
+{
+
+    for(auto i =0 ;i<c.size();++i){
+        if(c[i]>0)
+            return i;
+    }
+
+}
 void Solver::solve()
 {
-    init();
-    std::vector<MultType>delta{};
-    delta.resize(c.size());
-    
+    // A
     A.resize(constraits_.size());
     for(auto i=0;i<constraits_.size();++i)
     {
@@ -41,43 +59,85 @@ void Solver::solve()
         {
             A[j][i]=constraits_[j].get_expr().get_polynomial()[i].get_mult();
         }
-    }
-    for(auto j=0;j<constraits_.size();++j)
-    {
-        for(auto i=0;i<vars_.size();++i)
-        {
-        }
-    }
+    }// A
 
+    // b
     for(auto i=0;i<constraits_.size();++i)
     {
         b.push_back(constraits_[i].get_b_type());
-    }
-    for(auto i=0;i<b.size();++i)
+    }// b
 
+    // c
     for(auto i=0;i<get_objective().get_polynomial().size();++i)
     {
         c.push_back(get_objective().get_polynomial()[i].get_mult());
+    }// c
+    
+    init();
+    show_debug();
+    results.resize(c.size());
+
+
+    std::vector<MultType> delta{};
+    delta.resize(c.size());
+    while(in_c_is_positive())
+    {
+        std::cout<<"%%%%%%%%"<<std::endl;
+        auto e= chose_positive_c();//e is index
+
+        for(auto i :B)
+        {
+
+            i=std::find(B.begin(),B.end(),i)-B.begin();
+
+            if(A[i][e]>0)
+                delta[i]=b[i]/A[i][e];
+            else
+                delta[i]=std::numeric_limits<MultType>::infinity();
+            
+        }
+            auto val=*std::min_element(delta.begin(),delta.end());
+            auto l=std::find(delta.begin(),delta.end(),val)-delta.begin();
+            std::cout<<"----"<<l<<std::endl;
+            if(delta[l]==std::numeric_limits<MultType>::infinity())
+            {
+
+                unbounded_=true;
+                solved_=true;
+                return;
+            }
+            std::cout<<"pivot -> "<<l<<" "<<e<<std::endl;
+
+            pivot(l,e);
+
     }
+
     for(auto i=0;i<c.size();++i)
-    
-    auto vi=0;
-
-    for(auto i=0;i<vars_.size();++i)
-        N.push_back(i);
-    
-    for(auto i=vars_.size();i<vars_.size()+constraits_.size();++i)
-        B.push_back(i);
-
-
-    for(auto i=0;i<N.size();++i)
-
-    for(auto i=0;i<B.size();++i)
-    std::cout<<std::endl;
-    
+    {
+            if(std::find(B.begin(),B.end(),i)!=B.end())
+                results[i]=b[i];
+            else
+                results[i]=0;
+    }
     solved_=true;
-}
+            show_debug();
 
+}
+void Solver::init()
+{
+    auto p_to_min=std::min_element(b.begin(),b.end());
+    if(*p_to_min > 0){
+        auto vi=0;
+
+        for(auto i=0;i<vars_.size();++i)
+            N.push_back(i);
+    
+        for(auto i=vars_.size();i<vars_.size()+constraits_.size();++i)
+            B.push_back(i);
+        
+        return;
+    }
+}
 
 Solver::operator std::string()const
 {
@@ -168,7 +228,6 @@ const MultType Solver::optimal_value()const
 {
     return {};
 }
-
 void Solver::show_debug()const
 {
     std::cout<<"A"<<std::endl;
@@ -206,4 +265,81 @@ void Solver::show_debug()const
     std::cout<<std::endl;
 
     std::cout<<std::endl;
+    std::cout<<"results"<<std::endl;
+    for(auto i=0;i<results.size();++i)
+        std::cout<<results[i]<<" ";
+    std::cout<<std::endl;
+}
+void Solver::pivot(IndexType l,IndexType e)
+{
+
+    auto e_index=e;
+    auto l_index=l;
+    e=N[e];
+    l=B[l];
+    auto old_N=N;
+    auto old_B=B;
+    std::swap(old_N[e_index],old_B[l_index]);
+    std::sort(old_N.begin(),old_N.end());
+    std::sort(old_B.begin(),old_B.end());
+    auto l_new_index=std::find(old_N.begin(),old_N.end(),l)-old_N.begin();
+    auto e_new_index=std::find(old_B.begin(),old_B.end(),e)-old_B.begin();
+    std::cout<<"e_i="<<e_index<<" e="<<e<<" e_new_i="<<e_new_index<<std::endl;
+    std::cout<<"l_i="<<l_index<<" l="<<l<<" l_new_i="<<l_new_index<<std::endl;
+    auto old_A=A;//
+    auto old_b=b;//
+    auto old_c=c;//
+
+    b[e_new_index]=old_b[l_index]/old_A[l_index][e_index];
+    auto div=old_A[l_index][e_index];
+    for(auto j : old_N)
+    {
+        if(j!=l)
+        {   
+            auto j_index=std::find(N.begin(),N.end(),j)-N.begin();
+            auto j_new_index=std::find(old_N.begin(),old_N.end(),j)-old_N.begin();
+            A[e_new_index][j_new_index]=old_A[l_index][j_index]/div;
+        }
+    }
+    A[e_new_index][l_new_index]=1/div;
+    
+    for(auto i : old_B)
+    {
+        if(i!=e)
+        {
+            auto i_index=std::find(B.begin(),B.end(),i)-B.begin();
+            auto i_new_index=std::find(old_B.begin(),old_B.end(),i)-old_B.begin();
+            b[i_new_index]=old_b[i_index]-old_A[i_index][e_index]*b[e_index];
+
+            for(auto j : old_N)
+            {
+                if(j!=l)
+                {
+                    auto j_index=std::find(N.begin(),N.end(),j)-N.begin();
+                    auto j_new_index=std::find(old_N.begin(),old_N.end(),j)-old_N.begin();
+                    A[i_new_index][j_new_index]=old_A[i_index][j_index]-old_A[i_index][e_index]*A[e_new_index][j_new_index];
+                }
+            }
+            A[i_new_index][l_new_index]=-old_A[i_index][e_index]*A[e_new_index][l_new_index];
+
+        }
+    }
+
+
+    vi+=c[e_index]*b[e_index];
+
+    for(auto j : old_N)
+    {
+        if(j!=l)
+        {   
+            auto j_index=std::find(N.begin(),N.end(),j)-N.begin();
+            auto j_new_index=std::find(old_N.begin(),old_N.end(),j)-old_N.begin();
+            c[j_new_index]=old_c[j_index]-old_c[e_index]*A[e_new_index][j_new_index];
+        }
+    }
+    c[l_new_index]=-old_c[e_index]*A[e_new_index][l_new_index];
+
+    std::swap(B[l_index],N[e_index]);//
+    std::sort(B.begin(),B.end());//
+    std::sort(N.begin(),N.end());//
 }

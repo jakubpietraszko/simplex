@@ -30,6 +30,7 @@ public:
     const std::vector<Var> get_vars()const;
     const MultType optimal_value()const;
     void show_debug()const;
+    void pivot(IndexType a,IndexType b);
 private:
     std::string title_;
 
@@ -54,7 +55,8 @@ private:
     std::vector<MultType> B{};
     std::vector<MultType> results{};
 
-    void pivot(IndexType a,IndexType b){}
-    void init(){}
+    void init();
     bool obj_is_positive(){}
+    bool in_c_is_positive()const;
+    IndexType chose_positive_c()const;
 };
