@@ -24,6 +24,8 @@ int main()
     solver.add_constrait(4*x1 + x2 + 2*x3 <= 36);
 
     solver.solve();
+    
+    solver.show_debug();
 
     std::cout<<"#######"<<std::endl;
 

@@ -26,19 +26,47 @@ void Solver::add_constrait(const Constrait&constrait)
 }
 bool Solver::in_c_is_positive()const
 {
-    for(auto i =0 ;i<c.size();++i){
-    if(c[i]>0)
-        return true;
+    for(auto i =0;i<c.size();++i)
+    {
+        if(c[i]>0)
+            return true;
     }
     return false;
+    /*
+    static int aa=0;
+    if(aa==0 || aa==1 || aa==2)
+    {
+        aa++;
+        return true;
+    }
+    return false;*/
 }
 IndexType Solver::chose_positive_c()const
 {
-
-    for(auto i =0 ;i<c.size();++i){
+    for(auto i =0;i<c.size();++i)
+    {
         if(c[i]>0)
             return i;
     }
+    /*
+    static int aa=0;
+    if(aa==0)
+    {
+    aa++;
+
+        return 0;
+    }
+    if(aa==1)
+      {
+        aa++;
+        return 1;
+      } 
+    if(aa==2)
+    {
+        aa++;
+        return 0;
+    }
+    return 0;*/
 
 }
 void Solver::solve()
@@ -78,9 +106,8 @@ void Solver::solve()
     delta.resize(c.size());
     while(in_c_is_positive())
     {
-        std::cout<<"%%%%%%%%"<<std::endl;
         auto e= chose_positive_c();//e is index
-
+        
         for(auto i :B)
         {
 
@@ -94,7 +121,10 @@ void Solver::solve()
         }
             auto val=*std::min_element(delta.begin(),delta.end());
             auto l=std::find(delta.begin(),delta.end(),val)-delta.begin();
-            std::cout<<"----"<<l<<std::endl;
+            std::cout<<"delta"<<std::endl;
+            for(auto i=0;i<delta.size();++i)
+                std::cout<<delta[i]<<" ";
+            std::cout<<std::endl;
             if(delta[l]==std::numeric_limits<MultType>::infinity())
             {
 
@@ -116,7 +146,6 @@ void Solver::solve()
                 results[i]=0;
     }
     solved_=true;
-            show_debug();
 
 }
 void Solver::init()
@@ -305,7 +334,7 @@ void Solver::pivot(IndexType l,IndexType e)
         {
             auto i_index=std::find(B.begin(),B.end(),i)-B.begin();
             auto i_new_index=std::find(old_B.begin(),old_B.end(),i)-old_B.begin();
-            b[i_new_index]=old_b[i_index]-old_A[i_index][e_index]*b[e_index];
+            b[i_new_index]=old_b[i_index]-old_A[i_index][e_index]*b[e_new_index];
 
             for(auto j : old_N)
             {
@@ -322,7 +351,7 @@ void Solver::pivot(IndexType l,IndexType e)
     }
 
 
-    vi+=c[e_index]*b[e_index];
+    vi+=c[e_index]*b[e_new_index];
 
     for(auto j : old_N)
     {
