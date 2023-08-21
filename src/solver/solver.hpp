@@ -10,7 +10,7 @@ public:
     Solver(std::string title)//
         :title_{title}{}
     void maximize(const Expression&expr);//
-    void minimize(const Expression&expr);//
+    void minimize(Expression expr);//
     void add_variable(const Var&var);//
     void add_constrait(const Constrait&constrait);//
     void solve();//

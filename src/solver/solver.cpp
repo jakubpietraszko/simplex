@@ -10,10 +10,12 @@ void Solver::maximize(const Expression&expr)
     objective_=expr;
     entered_type_=true;
 }
-void Solver::minimize(const Expression&expr)
+void Solver::minimize(Expression expr)
 {
+    expr*=(-1);
     objective_type_=ObjectType::MIN;
     objective_=expr;
+
     entered_type_=true;
 }
 void Solver::add_variable(const Var&var)
@@ -340,7 +342,10 @@ void Solver::show_debug()const
     std::cout<<std::endl;
     
     std::cout<<"vi ";
-    std::cout<<vi<<std::endl;
+    if(objective_type_==ObjectType::MIN)
+        std::cout<<-vi<<std::endl;
+    else
+        std::cout<<vi<<std::endl;
 
     std::cout<<"N ";
     for(auto i=0;i<N.size();++i)
@@ -356,6 +361,10 @@ void Solver::show_debug()const
     std::cout<<"results"<<std::endl;
     for(auto i=0;i<results.size();++i)
         std::cout<<results[i]<<" ";
+    if(is_infeasible())
+        std::cout<<"infeasible"<<std::endl;
+    if(is_unbounded())
+        std::cout<<"unbounded"<<std::endl;
     std::cout<<std::endl;
 }
 void Solver::pivot(IndexType l,IndexType e)
