@@ -2,7 +2,7 @@
 not ready yet :C
 
 # On linux
-##0 in root project directory__
-##1 mkdir build__
-##2 cd build__
-##3 cmake .. && make__
+##0 in root project directory<br />
+##1 mkdir build<br />
+##2 cd build<br />
+##3 cmake .. && make<br />
