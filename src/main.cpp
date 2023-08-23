@@ -18,6 +18,5 @@ int main()
     solver.add_constrait(2*x1 -x2<=-2);
     //-20
     solver.solve();
-    solver.show_debug();
-
+    solver.show_results();
 }

@@ -5,13 +5,13 @@
 class Constrait
 {
 public:
-    Constrait(Expression expr,ConstraitType c_type,BoundType bound)//--
+    Constrait(Expression expr,ConstraitType c_type,BoundType bound)
     :expr_{expr},c_type_{c_type},bound_{bound}
     {}
 
-    Constrait inverse();//
-    Constrait operator*(const MultType&m)const;//
-    Constrait& operator*=(const MultType&m);//--
+    Constrait inverse();
+    Constrait operator*(const MultType&m)const;
+    Constrait& operator*=(const MultType&m);
 
     operator std::string()const
     {
@@ -28,12 +28,11 @@ public:
 
     }
 
+    const auto& get_expr()const{return expr_;}
+    const auto& get_c_type()const{return c_type_;}
+    const auto& get_b_type()const{return bound_;}
 
-    const Expression& get_expr()const{return expr_;}//--
-    const ConstraitType& get_c_type()const{return c_type_;}//--
-    const BoundType& get_b_type()const{return bound_;}//--
-
-    friend std::ostream& operator<<(std::ostream&os,const Constrait&constrait);//--
+    friend std::ostream& operator<<(std::ostream&os,const Constrait&constrait);
 
 private:
     Expression expr_;
