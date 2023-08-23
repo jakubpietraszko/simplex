@@ -7,7 +7,6 @@ int main()
 {
     auto solver=Solver{"Test"};
 
-
     auto x1=Var{"x",1};
     auto x2=Var{"x",2};
     solver.add_variable(x1);
