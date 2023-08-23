@@ -1,7 +1,7 @@
-## simplex
+# simplex
 not ready yet :C
 
-# On linux
+##Linux
 ##0 in root project directory<br />
 ##1 mkdir build<br />
 ##2 cd build<br />
