@@ -9,7 +9,7 @@ void Solver::maximize(const Expression&expr)
     objective_type_=ObjectType::MAX;
     objective_=expr;
     entered_type_=true;
-}
+}/*
 void Solver::minimize(Expression expr)
 {
     expr*=(-1);
@@ -17,7 +17,7 @@ void Solver::minimize(Expression expr)
     objective_=expr;
 
     entered_type_=true;
-}
+}*/
 void Solver::add_variable(const Var&var)
 {
     vars_.push_back(var);
@@ -73,7 +73,6 @@ void Solver::solve()
     
     if(init()==false)
     {
-        std::cout<<"VI"<<vi<<std::endl;
 
         return;
     }
@@ -81,7 +80,7 @@ void Solver::solve()
 
 
     std::vector<MultType> delta{};
-    delta.resize(c.size());
+    delta.resize(b.size());
     while(in_c_is_positive())
     {
         auto e= chose_positive_c();//e is index
@@ -106,19 +105,21 @@ void Solver::solve()
                 solved_=true;
                 return;
             }
-
             pivot(l,e);
+            show_debug();
 
     }
 
-    for(auto i=0;i<c.size();++i)
+    for(auto i=0;i<b.size();++i)
     {
             if(std::find(B.begin(),B.end(),i)!=B.end())
-                results[i]=b[i];
+                results[i]=b[std::find(B.begin(),B.end(),i)-B.begin()];
             else
                 results[i]=0;
     }
     solved_=true;
+    if(objective_type_==ObjectType::MIN && aux_==false)
+        vi*=(-1);
 
 }
 bool Solver::init()
@@ -134,22 +135,24 @@ bool Solver::init()
     }
     else
     {
-        std::cout<<"test"<<std::endl;
-        std::cout<<b.size()<<std::endl;
+        aux_=true;
         auto old_A=A;
         auto old_b=b;
         auto old_c=std::move(c);
         auto old_N=N;
-        auto old_B=b;
+        auto old_B=B;
         N.push_back(vars_.size()+constraits_.size());
+        
+
         for(auto i=0;i<B.size();++i)
             A[i].push_back(-1);
         for(auto i=0;i<N.size()-1;++i)
             c.push_back(0);
         c.push_back(-1);
         auto min_index_of_b=std::min_element(b.begin(),b.end())-b.begin();
-        std::cout<<"pivot --- "<<min_index_of_b<<" "<<N.size()-1<<std::endl;
         pivot(min_index_of_b,N.size()-1);
+        show_debug();
+
 
         std::vector<MultType> delta{};
         delta.resize(B.size());
@@ -164,58 +167,78 @@ bool Solver::init()
             else
                 delta[i]=std::numeric_limits<MultType>::infinity();
             
+            
         }
+
             auto val=*std::min_element(delta.begin(),delta.end());
             auto l=std::find(delta.begin(),delta.end(),val)-delta.begin();
-            for(auto d :delta)
-                std::cout<<d<<" ";
-            std::cout<<"pivot *** "<<l<<" "<<e<<std::endl;
             pivot(l,e);
+            show_debug();
 
         }
         if(vi==0)
         {
-            std::cout<<"&&"<<N.size()+B.size()-1<<std::endl;
             if(std::find(N.begin(),N.end(),N.size()+B.size()-1)==N.end())
             {
-                std::cout<<"jest w bazie"<<std::endl;
                 pivot(B.size()-1,0);
             }
             else
             {
-                std::cout<<"nie jest w bazie"<<std::endl;
-
             }
             for(auto i=0;i<A.size();++i)
                 A[i].pop_back();
             N.pop_back();
+
             
-                //return corect objective
                 old_N;
                 old_c;
                 auto new_c=c;
                 c=old_c;
+                std::cout<<"c"<<std::endl;
+                for(auto i=0;i<c.size();++i)
+                {
+                    std::cout<<c[i]<<" ";
+                }
+                std::cout<<std::endl;
+                std::cout<<"old N"<<std::endl;
+                for(auto i=0;i<old_N.size();++i)
+                std::cout<<old_N[i]<<" ";
+                std::cout<<std::endl;
+                std::cout<<"new N"<<std::endl;
+                for(auto i=0;i<N.size();++i)
+                std::cout<<N[i]<<" ";
+                std::cout<<std::endl;
                 for(auto i=0;i<old_c.size();++i)
                 {
-                    std::cout<<"index="<<old_N[i]<<std::endl;
+                    std::cout<<old_N[i]<<std::endl;
                     if(std::find(B.begin(),B.end(),old_N[i])!=B.end())
                     {
-                        std::cout<<old_N[i]<<" trzeba cos zrobic"<<std::endl;
                         c[i]=0;
-                        vi+=old_c[i]*b[0];
+                        std::cout<<"nie skip"<<std::endl;
+
+                        auto con=old_c[i];
+                        auto index=std::find(B.begin(),B.end(),old_N[i])-B.begin();
+                        //std::cout<<"--- "<<index<<std::endl;
+                        auto val=b[index];
+                        vi+=(con*val);
+                        std::cout<<"vi+="<<con*val<<std::endl;
                         for(auto j=0;j<c.size();++j)
                         {
-                            std::cout<<"&&"<<A[old_N[j]][j]<<std::endl;;
-                            c[j]+=A[old_N[j]][j];
+
+                            c[j]-=con*A[index][j];
+                            std::cout<<"c["<<j<<"]-="<<con<<"*"<<A[index][j]<<std::endl;
                         }
                     }
                     else
-                    {
-                        std::cout<<old_N[i]<<" nie trzeba cos zrobic"<<std::endl;
-
+                    {   
+                        std::cout<<"skip"<<std::endl;
+                        continue;
                     }
-                }
 
+                }
+                show_debug();
+            
+            std::cout<<"wysylam"<<std::endl;
             return true;
         }
         else
@@ -284,7 +307,7 @@ std::ostream& operator<<(std::ostream&os,const Solver&solver)
 }
 std::vector<MultType> Solver::get_results()const
 {
-    return {};
+    return results;
 }
 bool Solver::is_unbounded()const
 {
@@ -343,7 +366,7 @@ void Solver::show_debug()const
     
     std::cout<<"vi ";
     if(objective_type_==ObjectType::MIN)
-        std::cout<<-vi<<std::endl;
+        std::cout<<"- "<<vi<<std::endl;
     else
         std::cout<<vi<<std::endl;
 
@@ -361,14 +384,18 @@ void Solver::show_debug()const
     std::cout<<"results"<<std::endl;
     for(auto i=0;i<results.size();++i)
         std::cout<<results[i]<<" ";
+
     if(is_infeasible())
         std::cout<<"infeasible"<<std::endl;
+
     if(is_unbounded())
         std::cout<<"unbounded"<<std::endl;
+
     std::cout<<std::endl;
 }
 void Solver::pivot(IndexType l,IndexType e)
 {
+    std::cout<<"pivot "<<l<<" "<<e<<std::endl;
     auto e_index=e;
     auto l_index=l;
     e=N[e];
@@ -397,6 +424,7 @@ void Solver::pivot(IndexType l,IndexType e)
         }
     }
     A[e_new_index][l_new_index]=1/div;
+    //std::cout<<A[e_new_index][l_new_index]<<std::endl;
     
     for(auto i : old_B)
     {
@@ -433,8 +461,8 @@ void Solver::pivot(IndexType l,IndexType e)
         }
     }
     c[l_new_index]=-old_c[e_index]*A[e_new_index][l_new_index];
-
     std::swap(B[l_index],N[e_index]);//
     std::sort(B.begin(),B.end());//
     std::sort(N.begin(),N.end());//
+
 }

@@ -10,7 +10,11 @@ public:
     Solver(std::string title)//
         :title_{title}{}
     void maximize(const Expression&expr);//
-    void minimize(Expression expr);//
+    void minimize(Expression expr){expr*=(-1);
+    objective_type_=ObjectType::MIN;
+    objective_=expr;
+
+    entered_type_=true;}
     void add_variable(const Var&var);//
     void add_constrait(const Constrait&constrait);//
     void solve();//
@@ -31,6 +35,16 @@ public:
     const MultType optimal_value()const;
     void show_debug()const;
     void pivot(IndexType a,IndexType b);
+    auto get_vi()const
+    {
+        if(objective_type_==ObjectType::MIN && aux_==true)
+            return -vi;
+        else if(objective_type_==ObjectType::MIN)
+            return vi;
+        else
+            return vi;
+    }
+    auto get_o_val()const;
 private:
     std::string title_;
 
@@ -47,16 +61,17 @@ private:
     bool infeasible_{false};
 
 
-    std::vector<std::vector<MultType>> A{};
+    std::vector<std::vector<MultType>> A;
     std::vector<MultType> b{};
     std::vector<MultType> c{};
     MultType vi=0;
     std::vector<MultType> N{};
     std::vector<MultType> B{};
-    std::vector<MultType> results{};
+    std::vector<MultType> results;
 
     bool init();
     bool obj_is_positive(){}
     bool in_c_is_positive()const;
+    bool aux_=false;
     IndexType chose_positive_c()const;
 };

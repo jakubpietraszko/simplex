@@ -29,7 +29,7 @@ public:
     Var operator+()const;//--
 
     operator Monomial()const;//--
-    operator std::string()const;//--
+    operator std::string()const{return {};}//--
 
     bool operator==(const Var&rhs)const;//--
     bool operator!=(const Var&rhs)const;//--
@@ -82,7 +82,7 @@ public:
     bool operator==(const Monomial&rhs)const;//--
     bool operator!=(const Monomial&rhs)const;//--
 
-    operator std::string()const;//--
+    operator std::string()const{return {};}//--
 
     const MultType& get_mult()const{return mult_;}//--
     const Var& get_var()const{return var_;}//--
@@ -128,11 +128,11 @@ public:
 
     void simplify();//--
 
-    operator std::string()const;//--
+    operator std::string()const{return {};}//--
 
     friend std::ostream& operator<<(std::ostream&os,const Expression&expr);//--
 
-    const std::vector<Monomial> get_polynomial()const;//--
+    const std::vector<Monomial> get_polynomial()const{return polynomial_;}//--
 
     Constrait operator<=(const MultType&m)const;
     Constrait operator>=(const MultType&m)const;

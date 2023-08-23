@@ -9,7 +9,7 @@
 
 using IndexType=unsigned int;
 using BoundType=double;
-using MultType=long double;
+using MultType=double;
 
 const IndexType EPSILON=0.001;
 const IndexType PRECISION=2;

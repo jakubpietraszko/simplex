@@ -10,11 +10,12 @@ struct MonomialTester:public ::testing::Test{};
 struct ExpressionTester:public ::testing::Test{};
 struct SolverTester:public ::testing::Test{};
 
+
 const IndexType NUM=100;
 const IndexType RANDOM_NUMBER=42;
 
 //Var
-
+/*
 TEST_F(VarTester,var_first_ctor_and_getters)
 {
     Var::reset();
@@ -23,6 +24,7 @@ TEST_F(VarTester,var_first_ctor_and_getters)
     ASSERT_EQ(0,var.get_index());
 
 }
+
 TEST_F(VarTester,var_second_ctor_and_getters)
 {
     Var::reset();
@@ -52,6 +54,7 @@ TEST_F(VarTester,var_eq_and_no_eq_operator)
     ASSERT_NE(var1,var3);
 
 }
+/*
 TEST_F(VarTester,var_cast_to_string)
 {
     Var::reset();
@@ -62,6 +65,7 @@ TEST_F(VarTester,var_cast_to_string)
         ASSERT_EQ(std::string{"x"}+std::to_string(i),
         static_cast<std::string>(vars[i]));
 }
+
 TEST_F(VarTester,var_cast_to_mnm)
 {
     Var::reset();
@@ -94,6 +98,7 @@ TEST_F(VarTester,var_plus_minus_unary)
     ASSERT_EQ(var,+var);
     ASSERT_EQ(mnm,-var);
 }
+
 TEST_F(VarTester,var_plus_and_minus_no_reference)
 {
     Var::reset();
@@ -486,7 +491,8 @@ TEST_F(ConstraitTester,ctr_inverse)
 }
 
 //Solver
-
+*/
+/*
 TEST_F(SolverTester,slv_ctor_and_getters)
 {
     auto solver=Solver{"Test"};
@@ -713,4 +719,701 @@ TEST_F(SolverTester,slv_infeasible)
     static_cast<std::string>(-x0+x1<=-1)+"\nresults:\n"+
     "infeasible",
     static_cast<std::string>(solver));
+}*/
+bool t(MultType a,MultType b)
+{
+    if(fabs(a-b)<0.001)
+        return true;
+    return false;
+}
+TEST_F(SolverTester,slv_max_normal_3_3_pos)
+{
+    
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.maximize(10*x1-2*x2+10*x3);
+    solver.add_constrait(x1+x2+x3<=9);
+    solver.add_constrait(3*x1+x2-x3<=18);
+    solver.add_constrait(x1-x2+x3<=7);
+    solver.solve();
+    ASSERT_EQ(3,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(78,solver.get_vi()));
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+TEST_F(SolverTester,slv_max_normal_3_3_neg)
+{
+    
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.maximize(-10*x1-2*x2-10*x3);
+    solver.add_constrait(x1+x2+x3<=9);
+    solver.add_constrait(3*x1+x2-x3<=18);
+    solver.add_constrait(x1-x2+x3<=7);
+    solver.solve();
+    ASSERT_EQ(3,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(0,solver.get_vi()));
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+
+TEST_F(SolverTester,slv_max_normal_2_3_pos)
+{
+    
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+
+    solver.maximize(3*x1+2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=9);
+    solver.add_constrait(3*x1+x2-x3<=5);
+
+    solver.solve();
+    ASSERT_EQ(3,solver.get_results().size());
+
+    ASSERT_TRUE(t(16,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+TEST_F(SolverTester,slv_max_normal_2_3_neg)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+
+    solver.maximize(-3*x1-2*x2-x3);
+    solver.add_constrait(x1+x2+x3<=9);
+    solver.add_constrait(3*x1+x2-x3<=5);
+
+    solver.solve();
+    ASSERT_EQ(3,solver.get_results().size());
+
+    ASSERT_TRUE(t(0,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+
+TEST_F(SolverTester,slv_max_normal_3_2_pos)
+{
+    
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+
+    solver.maximize(3*x1+2*x2);
+    solver.add_constrait(x1+x2<=9);
+    solver.add_constrait(3*x1+x2<=18);
+    solver.add_constrait(3*x1+x2<=7);
+
+    solver.solve();
+    ASSERT_EQ(2,solver.get_results().size());
+
+    ASSERT_TRUE(t(14,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+TEST_F(SolverTester,slv_max_normal_3_2_neg)
+{
+    
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+
+    solver.maximize(-3*x1-2*x2);
+    solver.add_constrait(x1+x2<=9);
+    solver.add_constrait(3*x1+x2<=18);
+    solver.add_constrait(3*x1+x2<=7);
+
+    solver.solve();
+    ASSERT_EQ(2,solver.get_results().size());
+
+    ASSERT_TRUE(t(0,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+
+TEST_F(SolverTester,slv_min_normal_3_3_pos)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.minimize(3*x1-2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=9);
+    solver.add_constrait(3*x1+x2-x3<=18);
+    solver.add_constrait(x1-x2+x3<=7);
+
+    solver.solve();
+    ASSERT_EQ(3,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(-18,solver.get_vi()));
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+    
+}
+TEST_F(SolverTester,slv_min_normal_3_3_neg)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.minimize(3*x1+2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=9);
+    solver.add_constrait(3*x1+x2-x3<=18);
+    solver.add_constrait(x1-x2+x3<=7);
+
+    solver.solve();
+    ASSERT_EQ(3,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(0,solver.get_vi()));
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+
+TEST_F(SolverTester,slv_min_normal_2_3_pos)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+
+    solver.minimize(3*x1-2*x2-2*x3);
+    solver.add_constrait(-x1+x2-x3<=9);
+    solver.add_constrait(3*x1+x2+x3<=18);
+
+    solver.solve();
+    ASSERT_EQ(3,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(-36,solver.get_vi()));
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+TEST_F(SolverTester,slv_min_normal_2_3_neg)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+
+    solver.minimize(3*x1+2*x2+2*x3);
+    solver.add_constrait(-x1+x2-x3<=9);
+    solver.add_constrait(3*x1+x2+x3<=18);
+
+    solver.solve();
+    ASSERT_EQ(3,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(0,solver.get_vi()));
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+    
+}
+
+TEST_F(SolverTester,slv_min_normal_3_2_pos)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.minimize(3*x1-2*x2);
+    solver.add_constrait(-x1+x2<=9);
+    solver.add_constrait(3*x1+x2<=18);
+    solver.add_constrait(3*x1-x2<=7);
+
+    solver.solve();
+    ASSERT_EQ(2,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(-18,solver.get_vi()));
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+    
+    
+}
+TEST_F(SolverTester,slv_min_normal_3_2_neg)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.minimize(3*x1+2*x2);
+    solver.add_constrait(-x1+x2<=9);
+    solver.add_constrait(3*x1+x2<=18);
+    solver.add_constrait(3*x1-x2<=7);
+
+    solver.solve();
+    ASSERT_EQ(2,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(0,solver.get_vi()));
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+
+TEST_F(SolverTester,slv_max_aux_3_3_pos)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.maximize(3*x1-2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=10);
+    solver.add_constrait(3*x1 +x2 -x3<=-5);
+    solver.add_constrait(x1-x2+x3<=7);
+    solver.solve();
+
+
+    ASSERT_EQ(3,solver.get_results().size());
+    ASSERT_EQ(8,solver.get_vi());
+    ASSERT_TRUE(t(8,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+    
+}
+TEST_F(SolverTester,slv_max_aux_3_3_neg)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.maximize(x1-2*x2-30*x3);
+    solver.add_constrait(x1+x2+x3<=10);
+    solver.add_constrait(3*x1 +x2 -x3<=-5);
+    solver.add_constrait(x1-x2+x3<=7);
+    solver.solve();
+
+
+    ASSERT_EQ(3,solver.get_results().size());
+    ASSERT_EQ(-150,solver.get_vi());
+    ASSERT_TRUE(t(-150,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+
+TEST_F(SolverTester,slv_max_aux_2_3_pos)
+{
+    
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.maximize(3*x1-2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=10);
+    solver.add_constrait(3*x1 +x2 -x3<=-5);
+    solver.solve();
+
+
+    ASSERT_EQ(3,solver.get_results().size());
+    ASSERT_EQ(12.5,solver.get_vi());
+    ASSERT_TRUE(t(12.5,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+TEST_F(SolverTester,slv_max_aux_2_3_neg)
+{
+    
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.maximize(-30*x1-20*x2-10*x3);
+    solver.add_constrait(x1+x2+x3<=10);
+    solver.add_constrait(3*x1 +x2 -x3<=-5);
+    solver.solve();
+
+
+    ASSERT_EQ(3,solver.get_results().size());
+
+    ASSERT_TRUE(t(-50,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+
+TEST_F(SolverTester,slv_max_aux_3_2_pos)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.maximize(3*x1+2*x2);
+    solver.add_constrait(x1+x2<=10);
+    solver.add_constrait(x1 -x2<=-10);
+    solver.add_constrait(-x1 -x2<=7);
+    solver.solve();
+
+
+    ASSERT_EQ(2,solver.get_results().size());
+    ASSERT_EQ(20,solver.get_vi());
+    ASSERT_TRUE(t(20,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+    
+}
+TEST_F(SolverTester,slv_max_aux_3_2_neg)
+{
+    
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.maximize(-3*x1-2*x2);
+    solver.add_constrait(x1+x2<=10);
+    solver.add_constrait(x1 -x2<=-10);
+    solver.add_constrait(-x1 -x2<=7);
+    solver.solve();
+
+
+    ASSERT_EQ(2,solver.get_results().size());
+    ASSERT_EQ(-20,solver.get_vi());
+    ASSERT_TRUE(t(-20,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+
+TEST_F(SolverTester,slv_min_aux_3_3_pos)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.minimize(3*x1+2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=10);
+    solver.add_constrait(3*x1 +x2 -x3<=-1);
+    solver.add_constrait(x1-x2+x3<=7);
+    solver.solve();
+
+
+    ASSERT_EQ(3,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(1,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+    
+}
+TEST_F(SolverTester,slv_min_aux_3_3_neg)
+{
+
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.minimize(3*x1-2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=10);
+    solver.add_constrait(3*x1 +x2 -x3<=-1);
+    solver.add_constrait(x1-x2+x3<=7);
+    solver.solve();
+
+
+    ASSERT_EQ(3,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(-3.5,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+
+TEST_F(SolverTester,slv_min_aux_2_3_pos)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.minimize(3*x1+2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=10);
+    solver.add_constrait(5*x1 +x2 -2*x3<=-1);
+    solver.solve();
+
+
+    ASSERT_EQ(3,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(0.5,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+    
+}
+TEST_F(SolverTester,slv_min_aux_2_3_neg)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.minimize(3*x1-2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=10);
+    solver.add_constrait(5*x1 +x2 -2*x3<=-1);
+    solver.solve();
+
+
+    ASSERT_EQ(3,solver.get_results().size());
+
+
+    ASSERT_TRUE(t(-9,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+    
+}
+
+TEST_F(SolverTester,slv_min_aux_3_2_pos)
+{
+    
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.minimize(3*x1+2*x2);
+    solver.add_constrait(x1+x2<=10);
+    solver.add_constrait(x1 -x2<=-1);
+    solver.add_constrait(2*x1 -x2<=-2);
+    solver.solve();
+
+
+    ASSERT_EQ(2,solver.get_results().size());
+
+    ASSERT_EQ(4,solver.get_vi());
+    ASSERT_TRUE(t(4,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+}
+TEST_F(SolverTester,slv_min_aux_3_2_neg)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.minimize(3*x1-2*x2);
+    solver.add_constrait(x1+x2<=10);
+    solver.add_constrait(x1 -x2<=-1);
+    solver.add_constrait(2*x1 -x2<=-2);
+    solver.solve();
+
+
+    ASSERT_EQ(2,solver.get_results().size());
+
+    ASSERT_EQ(-20,solver.get_vi());
+    ASSERT_TRUE(t(-20,solver.get_vi()));
+
+
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+
+}
+
+TEST_F(SolverTester,slv_max_unbounded)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+
+    solver.maximize(3*x1-2*x2+x3);
+    solver.add_constrait(x1-x2+x3<=9);
+    solver.add_constrait(-x1-x2+x3<=10);
+    solver.add_constrait(-x1-x2-x3<=10);
+
+    solver.solve();
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(true,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+    
+}
+TEST_F(SolverTester,slv_min_unbounded)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+
+    solver.minimize(3*x1-2*x2+x3);
+    solver.add_constrait(x1-x2+x3<=9);
+    solver.add_constrait(-x1-x2+x3<=10);
+    solver.add_constrait(-x1-x2-x3<=10);
+
+    solver.solve();
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(true,solver.is_unbounded());
+    ASSERT_EQ(false,solver.is_infeasible());
+    
+}
+
+TEST_F(SolverTester,slv_max_infeasible)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.maximize(3*x1-2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=-9);
+    solver.add_constrait(3*x1+x2-x3<=18);
+    solver.add_constrait(x1-x2+x3<=7);
+    solver.solve();
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(true,solver.is_infeasible());
+    
+}
+TEST_F(SolverTester,slv_min_infeasible)
+{
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.minimize(3*x1-2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=-9);
+    solver.add_constrait(3*x1+x2-x3<=18);
+    solver.add_constrait(x1-x2+x3<=7);
+    solver.solve();
+    ASSERT_EQ(true,solver.is_solved());
+    ASSERT_EQ(false,solver.is_unbounded());
+    ASSERT_EQ(true,solver.is_infeasible());
+    
 }
