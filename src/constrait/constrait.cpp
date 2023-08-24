@@ -2,11 +2,7 @@
 
 //Constrait
 
-Constrait Constrait::inverse()
-{
-    (*this)*=(-1);
-    return *this;
-}
+
 Constrait Constrait::operator*(const MultType&m)const
 {
     auto constrait{*this};

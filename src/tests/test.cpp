@@ -13,6 +13,7 @@ struct SolverTester:public ::testing::Test{};
 
 const IndexType NUM=100;
 const IndexType RANDOM_NUMBER=42;
+const MultType RANDOM_NUMBER_double{static_cast<double>(RANDOM_NUMBER)};
 
 //Var
 TEST_F(VarTester,var_first_ctor_and_getters)
@@ -120,28 +121,28 @@ TEST_F(VarTester,var_plus_and_minus_no_reference)
     auto expr5=var1+var2+var3;
     auto expr6=var1-var2+var3;
 
-    ASSERT_EQ(change_precision(NUM1)+"*x0",
+    ASSERT_EQ(std::to_string(NUM1)+"*x0",
     static_cast<std::string>(expr0));
 
-    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(NUM1)+"*x1",
+    ASSERT_EQ(std::to_string(NUM1)+"*x0 +"+std::to_string(NUM1)+"*x1",
     static_cast<std::string>(expr1));
 
 
-    ASSERT_EQ(change_precision(NUM1)+"*x0 "+change_precision(-NUM1)+"*x1",
+    ASSERT_EQ(std::to_string(NUM1)+"*x0 "+std::to_string(-NUM1)+"*x1",
     static_cast<std::string>(expr2));
 
 
-    ASSERT_EQ(change_precision(NUM1)+"*x0 "+change_precision(-NUM2)+"*x2",
+    ASSERT_EQ(std::to_string(NUM1)+"*x0 "+std::to_string(-NUM2)+"*x2",
     static_cast<std::string>(expr3));
 
-    ASSERT_EQ(change_precision(NUM1)+"*x0 "+change_precision(-NUM1)+"*x1",
+    ASSERT_EQ(std::to_string(NUM1)+"*x0 "+std::to_string(-NUM1)+"*x1",
     static_cast<std::string>(expr4));
 
 
-    ASSERT_EQ(change_precision(NUM1)+"*x0 +"+change_precision(NUM1)+"*x1 +"+change_precision(NUM1)+"*x2",
+    ASSERT_EQ(std::to_string(NUM1)+"*x0 +"+std::to_string(NUM1)+"*x1 +"+std::to_string(NUM1)+"*x2",
     static_cast<std::string>(expr5));
 
-    ASSERT_EQ(change_precision(NUM1)+"*x0 "+change_precision(-NUM1)+"*x1 +"+change_precision(NUM1)+"*x2",
+    ASSERT_EQ(std::to_string(NUM1)+"*x0 "+std::to_string(-NUM1)+"*x1 +"+std::to_string(NUM1)+"*x2",
     static_cast<std::string>(expr6));
 }
 TEST_F(VarTester,var_zero_division_error)
@@ -184,10 +185,10 @@ TEST_F(MonomialTester,mnm_cast_to_string)
     Monomial mnm1{RANDOM_NUMBER,"x",RANDOM_NUMBER};
     Monomial mnm2{-RANDOM_NUMBER,"x",RANDOM_NUMBER+1};
 
-    ASSERT_EQ(change_precision(mnm1.get_mult())+"*x"+std::to_string(RANDOM_NUMBER),
+    ASSERT_EQ(std::to_string(mnm1.get_mult())+"*x"+std::to_string(RANDOM_NUMBER),
     static_cast<std::string>(mnm1));
 
-    ASSERT_EQ(change_precision(mnm2.get_mult())+"*x"+std::to_string(RANDOM_NUMBER+1),
+    ASSERT_EQ(std::to_string(mnm2.get_mult())+"*x"+std::to_string(RANDOM_NUMBER+1),
     static_cast<std::string>(mnm2));
 }
 TEST_F(MonomialTester,mnm_mult_and_div_no_reference)
@@ -228,16 +229,16 @@ TEST_F(MonomialTester,mnm_plus_and_minus_no_reference)
     Monomial mnm1{RANDOM_NUMBER,"x",0};    
     Monomial mnm2{RANDOM_NUMBER,"x",1};
 
-    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 +"+change_precision(RANDOM_NUMBER)+"*x1",
+    ASSERT_EQ(std::to_string(static_cast<double>(RANDOM_NUMBER))+"*x0 +"+std::to_string(static_cast<double>(RANDOM_NUMBER))+"*x1",
     static_cast<std::string>(mnm1+mnm2)); 
 
-    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 "+change_precision(-static_cast<double>(RANDOM_NUMBER))+"*x1",
+    ASSERT_EQ(std::to_string(static_cast<double>(RANDOM_NUMBER))+"*x0 "+std::to_string(-static_cast<double>(RANDOM_NUMBER))+"*x1",
     static_cast<std::string>(mnm1-mnm2));
 
-    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 +"+change_precision(1)+"*x"+std::to_string(RANDOM_NUMBER),
+    ASSERT_EQ(std::to_string(static_cast<double>(RANDOM_NUMBER))+"*x0 +"+std::to_string(static_cast<double>(1))+"*x"+std::to_string((RANDOM_NUMBER)),
     static_cast<std::string>(mnm1+var));    
 
-    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 "+change_precision(-1)+"*x"+std::to_string(RANDOM_NUMBER),
+    ASSERT_EQ(std::to_string(static_cast<double>(RANDOM_NUMBER))+"*x0 "+std::to_string(static_cast<double>(-1))+"*x"+std::to_string(RANDOM_NUMBER),
     static_cast<std::string>(mnm1-var));    
 
 }
@@ -274,9 +275,9 @@ TEST_F(ExpressionTester,exp_cast_to_string)
     auto var2=Var{"x",1};
     auto mnm1=Monomial{RANDOM_NUMBER,"x",2};
     auto expr=var1+var2-mnm1;
-    ASSERT_EQ(change_precision(1)+"*x"+std::to_string(0)+
-    " +"+change_precision(1)+"*x"+std::to_string(1)+" "+
-    change_precision(-static_cast<double>(RANDOM_NUMBER))+"*x"+std::to_string(2),
+    ASSERT_EQ(std::to_string(static_cast<double>(1))+"*x"+std::to_string(0)+
+    " +"+std::to_string(static_cast<double>(1))+"*x"+std::to_string(1)+" "+
+    std::to_string(-static_cast<double>(RANDOM_NUMBER))+"*x"+std::to_string(2),
     static_cast<std::string>(expr));
 }
 TEST_F(ExpressionTester,exp_simplify)
@@ -284,7 +285,7 @@ TEST_F(ExpressionTester,exp_simplify)
     auto var1=Var{"x",0};
     auto var2=Var{"x",1};
     auto expr=Expression{var1+var2+var1};
-    ASSERT_EQ(change_precision(2)+"*x0"+" +"+change_precision(1)+"*x1",
+    ASSERT_EQ(std::to_string(static_cast<double>(2))+"*x0"+" +"+std::to_string(static_cast<double>(1))+"*x1",
     static_cast<std::string>(expr));
     expr.simplify();
 
@@ -295,7 +296,7 @@ TEST_F(ExpressionTester,expr_plus_and_minus_unary)
     auto var2=Var{"x",1};
     auto expr=Expression{var1+var2+var1};
     ASSERT_EQ(static_cast<std::string>(expr),static_cast<std::string>(+expr));
-    ASSERT_EQ(change_precision(-2)+"*x0 "+change_precision(-1)+"*x1",
+    ASSERT_EQ(std::to_string(static_cast<double>(-2))+"*x0 "+std::to_string(static_cast<double>(-1))+"*x1",
     static_cast<std::string>(-expr));
 }
 TEST_F(ExpressionTester,exp_plus_and_minus_no_reference)
@@ -308,16 +309,16 @@ TEST_F(ExpressionTester,exp_plus_and_minus_no_reference)
     auto expr3=expr+mnm1;
     auto expr4=expr-mnm1;
 
-    ASSERT_EQ(change_precision(1)+"*x0",
+    ASSERT_EQ(std::to_string(static_cast<double>(1))+"*x0",
     static_cast<std::string>(expr1));
 
-    ASSERT_EQ(change_precision(-1)+"*x0",
+    ASSERT_EQ(std::to_string(static_cast<double>(-1))+"*x0",
     static_cast<std::string>(expr2));
 
-    ASSERT_EQ(change_precision(1)+"*x0",
+    ASSERT_EQ(std::to_string(static_cast<double>(1))+"*x0",
     static_cast<std::string>(expr3));
 
-    ASSERT_EQ(change_precision(-1)+"*x0",
+    ASSERT_EQ(std::to_string(static_cast<double>(-1))+"*x0",
     static_cast<std::string>(expr4));
 
 }
@@ -330,19 +331,19 @@ TEST_F(ExpressionTester,exp_plus_and_minus_reference)
     auto expr=Expression{};
 
     expr+=var1;
-    ASSERT_EQ(change_precision(1)+"*x0",
+    ASSERT_EQ(std::to_string(1.0)+"*x0",
     static_cast<std::string>(expr));
 
     expr-=var2;
-    ASSERT_EQ(change_precision(1)+"*x0 "+change_precision(-1)+"*x1",
+    ASSERT_EQ(std::to_string(1.0)+"*x0 "+std::to_string(-1.0)+"*x1",
     static_cast<std::string>(expr));
 
     expr+=mnm1;
-    ASSERT_EQ(change_precision(2)+"*x0 "+change_precision(-1)+"*x1",
+    ASSERT_EQ(std::to_string(2.0)+"*x0 "+std::to_string(-1.0)+"*x1",
     static_cast<std::string>(expr));
 
     expr-=mnm2;
-    ASSERT_EQ(change_precision(2)+"*x0 "+change_precision(-2)+"*x1",
+    ASSERT_EQ(std::to_string(2.0)+"*x0 "+std::to_string(-2.0)+"*x1",
     static_cast<std::string>(expr));
 
 }
@@ -356,13 +357,13 @@ TEST_F(ExpressionTester,exp_mult_and_div_no_reference)
     auto expr2=RANDOM_NUMBER*expr;
     auto expr3=expr/RANDOM_NUMBER;
 
-    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 +"+change_precision(RANDOM_NUMBER)+"*x1",
+    ASSERT_EQ(std::to_string(static_cast<double>(RANDOM_NUMBER))+"*x0 +"+std::to_string(static_cast<double>(RANDOM_NUMBER))+"*x1",
     static_cast<std::string>(expr1));
 
-    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 +"+change_precision(RANDOM_NUMBER)+"*x1",
+    ASSERT_EQ(std::to_string(static_cast<double>(RANDOM_NUMBER))+"*x0 +"+std::to_string(static_cast<double>(RANDOM_NUMBER))+"*x1",
     static_cast<std::string>(expr2));
 
-    ASSERT_EQ(change_precision(1.0/RANDOM_NUMBER)+"*x0 +"+change_precision(1.0/RANDOM_NUMBER)+"*x1",
+    ASSERT_EQ(std::to_string(1.0/RANDOM_NUMBER)+"*x0 +"+std::to_string(1.0/RANDOM_NUMBER)+"*x1",
     static_cast<std::string>(expr3));
 }
 TEST_F(ExpressionTester,exp_mult_and_div_reference)
@@ -372,11 +373,11 @@ TEST_F(ExpressionTester,exp_mult_and_div_reference)
     auto expr=var1+var2;
 
     expr*=RANDOM_NUMBER;
-    ASSERT_EQ(change_precision(RANDOM_NUMBER)+"*x0 +"+change_precision(RANDOM_NUMBER)+"*x1",
+    ASSERT_EQ(std::to_string(static_cast<double>(RANDOM_NUMBER))+"*x0 +"+std::to_string(static_cast<double>(RANDOM_NUMBER))+"*x1",
     static_cast<std::string>(expr));
 
     expr/=2;
-    ASSERT_EQ(change_precision(RANDOM_NUMBER/2.0)+"*x0 +"+change_precision(RANDOM_NUMBER/2.0)+"*x1",
+    ASSERT_EQ(std::to_string(RANDOM_NUMBER/2.0)+"*x0 +"+std::to_string(RANDOM_NUMBER/2.0)+"*x1",
     static_cast<std::string>(expr));
 }
 TEST_F(ExpressionTester,exp_zero_division_error)
@@ -419,13 +420,13 @@ TEST_F(ConstraitTester,ctr_cast_to_string)
     auto constrait2=Constrait{expr,ConstraitType::GE,RANDOM_NUMBER};
     auto constrait3=Constrait{expr,ConstraitType::LE,RANDOM_NUMBER};
     
-    ASSERT_EQ(static_cast<std::string>(constrait1.get_expr())+" = "+change_precision(constrait1.get_b_type()),
+    ASSERT_EQ(static_cast<std::string>(constrait1.get_expr())+" = "+std::to_string(constrait1.get_b_type()),
     static_cast<std::string>(constrait1));
 
-    ASSERT_EQ(static_cast<std::string>(constrait2.get_expr())+" >= "+change_precision(constrait2.get_b_type()),
+    ASSERT_EQ(static_cast<std::string>(constrait2.get_expr())+" >= "+std::to_string(constrait2.get_b_type()),
     static_cast<std::string>(constrait2));
 
-    ASSERT_EQ(static_cast<std::string>(constrait3.get_expr())+" <= "+change_precision(constrait3.get_b_type()),
+    ASSERT_EQ(static_cast<std::string>(constrait3.get_expr())+" <= "+std::to_string(constrait3.get_b_type()),
     static_cast<std::string>(constrait3));
 }
 TEST_F(ConstraitTester,ctr_mult_operator_reference)
@@ -462,10 +463,10 @@ TEST_F(ConstraitTester,ctr_mult_operator_no_reference)
     auto constrait1=constrait*2;
     auto constrait2=constrait*(-2);
 
-    ASSERT_EQ(static_cast<std::string>(2*expr)+" <= "+change_precision(RANDOM_NUMBER*2),
+    ASSERT_EQ(static_cast<std::string>(2*expr)+" <= "+std::to_string(static_cast<double>(RANDOM_NUMBER*2)),
     static_cast<std::string>(constrait1));
 
-    ASSERT_EQ(static_cast<std::string>(-2*expr)+" >= "+change_precision(RANDOM_NUMBER*(-2.0)),
+    ASSERT_EQ(static_cast<std::string>(-2*expr)+" >= "+std::to_string(RANDOM_NUMBER*(-2.0)),
     static_cast<std::string>(constrait2));
 }
 TEST_F(ConstraitTester,ctr_inverse)
@@ -478,10 +479,10 @@ TEST_F(ConstraitTester,ctr_inverse)
     constrait1.inverse();
     constrait2.inverse();
 
-    ASSERT_EQ(static_cast<std::string>(-1*expr)+" >= "+change_precision(-1.0*RANDOM_NUMBER),
+    ASSERT_EQ(static_cast<std::string>(-1*expr)+" >= "+std::to_string(-1.0*RANDOM_NUMBER),
     static_cast<std::string>(constrait1));
 
-    ASSERT_EQ(static_cast<std::string>(-1*expr)+" <= "+change_precision(-1.0*RANDOM_NUMBER),
+    ASSERT_EQ(static_cast<std::string>(-1*expr)+" <= "+std::to_string(-1.0*RANDOM_NUMBER),
     static_cast<std::string>(constrait2));
 }
 
@@ -514,16 +515,16 @@ TEST_F(SolverTester,slv_add_pretty_ctr)
     auto x0=Var{"x",0};
     auto x1=Var{"x",1};
     auto x2=Var{"x",2};
-    ASSERT_EQ(change_precision(1)+"*x0 +"+change_precision(1)+"*x1 +"+change_precision(1)+"*x2"+
-    " = "+change_precision(RANDOM_NUMBER),
+    ASSERT_EQ(std::to_string(1.0)+"*x0 +"+std::to_string(1.0)+"*x1 +"+std::to_string(1.0)+"*x2"+
+    " = "+std::to_string(static_cast<double>(RANDOM_NUMBER)),
     static_cast<std::string>(x0+x1+x2=RANDOM_NUMBER));
 
-    ASSERT_EQ(change_precision(1)+"*x0 +"+change_precision(1)+"*x1 +"+change_precision(1)+"*x2"+
-    " <= "+change_precision(RANDOM_NUMBER),
+    ASSERT_EQ(std::to_string(1.0)+"*x0 +"+std::to_string(1.0)+"*x1 +"+std::to_string(1.0)+"*x2"+
+    " <= "+std::to_string(static_cast<double>(RANDOM_NUMBER)),
     static_cast<std::string>(x0+x1+x2<=RANDOM_NUMBER));
 
-    ASSERT_EQ(change_precision(1)+"*x0 +"+change_precision(1)+"*x1 +"+change_precision(1)+"*x2"+
-    " >= "+change_precision(RANDOM_NUMBER),
+    ASSERT_EQ(std::to_string(1.0)+"*x0 +"+std::to_string(1.0)+"*x1 +"+std::to_string(1.0)+"*x2"+
+    " >= "+std::to_string(static_cast<double>(RANDOM_NUMBER)),
     static_cast<std::string>(x0+x1+x2>=RANDOM_NUMBER));
 }
 TEST_F(SolverTester,slv_add_ctr_and_getters)
@@ -601,9 +602,11 @@ TEST_F(SolverTester,slv_min)
     static_cast<std::string>(solver));
 
 }
-/*
-TEST_F(SolverTester,slv_solved)
+
+TEST_F(SolverTester,slv_no_full_constrait)
 {
+    ASSERT_TRUE(false);
+
     auto solver=Solver{"Test"};
     auto x0=Var{"x",0};
     auto x1=Var{"x",1};
@@ -616,7 +619,7 @@ TEST_F(SolverTester,slv_solved)
     solver.add_constrait(x0<=20);
     solver.add_constrait(-x0+x1-x2<=30);
     solver.add_constrait(x1<=5);
-
+    
     ASSERT_EQ(std::string{"Test\n"}+"maximize "+
     static_cast<std::string>(x0+x1+x2)+"\n"+
     "subject to:\n"+static_cast<std::string>(x0-x1+x2<=10)+
@@ -642,12 +645,13 @@ TEST_F(SolverTester,slv_solved)
     static_cast<std::string>(solver));
     
 }
-*/
 
-/*
 
-TEST_F(SolverTester,slv_return_result)
+
+TEST_F(SolverTester,slv_inversed_obj)
 {
+    ASSERT_TRUE(false);
+
     auto solver=Solver{"Test"};
     auto x0=Var{"x",0};
     auto x1=Var{"x",1};
@@ -660,26 +664,82 @@ TEST_F(SolverTester,slv_return_result)
     solver.add_constrait(x0<=20);
     solver.add_constrait(-x0+x1-x2<=30);
     solver.add_constrait(x1<=5);
-    solver.solve();
-    auto res=solver.get_results();
-    //ASSERT_EQ(0,solver.get_results()[0]);
-    //ASSERT_EQ(5,solver.get_results()[1]);
-    //ASSERT_EQ(15,solver.get_results()[2]);
-}
-TEST_F(SolverTester,slv_unbounded)
-{
-    auto solver=Solver{"Test"};
-    auto x0=Var{"x",0};
-    auto x1=Var{"x",1};
-    solver.maximize(x0+x1);
-    solver.add_variable(x0);
-    solver.add_variable(x1);
-    solver.add_constrait(x0-x1<=1);
-    solver.add_constrait(x1-x0<=1);
+    
+    ASSERT_EQ(std::string{"Test\n"}+"maximize "+
+    static_cast<std::string>(x0+x1+x2)+"\n"+
+    "subject to:\n"+static_cast<std::string>(x0-x1+x2<=10)+
+    +"\n"+static_cast<std::string>(x0<=20)+"\n"+
+    static_cast<std::string>(-x0+x1-x2<=30)+"\n"+
+    static_cast<std::string>(x1<=5)+"\n"+
+    "results:\nunsolved",
+    static_cast<std::string>(solver));
 
-    ASSERT_EQ(std::string{"Test\n"}+"maximize: "+static_cast<std::string>(x0+x1)+
-    "\nsubject to:\n"+static_cast<std::string>(x0-x1<=1)+"\n"+
-    static_cast<std::string>(-x0+x1<=1)+"\nresults:\n"+
+    solver.solve();
+
+    ASSERT_EQ(std::string{"Test\n"}+"maximize "+
+    static_cast<std::string>(x0+x1+x2)+"\n"+
+    "subject to:\n"+static_cast<std::string>(x0-x1+x2<=10)+
+    +"\n"+static_cast<std::string>(x0<=20)+"\n"+
+    static_cast<std::string>(-x0+x1-x2<=30)+"\n"+
+    static_cast<std::string>(x1<=5)+"\n"+
+    "results:\n"+
+    "optimal value = 20\n"+
+    "x0 = 0\n"+
+    "x1 = 5\n"+
+    "x2 = 15\n",
+    static_cast<std::string>(solver));
+    
+}
+
+
+
+
+TEST_F(SolverTester,slv_return_result)
+{
+
+    Solver solver{"test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+
+    solver.maximize(3*x1+2*x2);
+    solver.add_constrait(x1+x2<=9);
+    solver.add_constrait(3*x1+x2<=18);
+    solver.add_constrait(3*x1+x2<=7);
+
+    solver.solve();
+
+
+    auto res=solver.get_results();
+
+    ASSERT_EQ(2,res.size());
+    ASSERT_TRUE(dif(14,3*res[0]+2*res[1]));
+}
+
+
+
+TEST_F(SolverTester,slv_unbounded_print)
+{
+
+    Solver solver{"Test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
+    solver.add_variable(x1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+
+    solver.maximize(3*x1-2*x2+x3);
+    solver.add_constrait(x1-x2+x3<=9);
+    solver.add_constrait(-x1-x2+x3<=10);
+    solver.add_constrait(-x1-x2-x3<=10);
+
+    ASSERT_EQ(std::string{"Test\n"}+"maximize "+static_cast<std::string>(3*x1-2*x2+x3)+
+    "\nsubject to:\n"+static_cast<std::string>(x1-x2+x3<=9)+"\n"+
+    static_cast<std::string>(-x1-x2+x3<=10)+"\n"+
+    static_cast<std::string>(-x1-x2-x3<=10)+"\nresults:\n"+
     "unsolved",
     static_cast<std::string>(solver));
 
@@ -687,28 +747,32 @@ TEST_F(SolverTester,slv_unbounded)
     ASSERT_TRUE(solver.is_unbounded());
     ASSERT_FALSE(solver.is_infeasible());
 
-    ASSERT_EQ(std::string{"Test\n"}+"maximize: "+static_cast<std::string>(x0+x1)+
-    "\nsubject to:\n"+static_cast<std::string>(x0-x1<=1)+"\n"+
-    static_cast<std::string>(-x0+x1<=1)+"\nresults:\n"+
+    ASSERT_EQ(std::string{"Test\n"}+"maximize "+static_cast<std::string>(3*x1-2*x2+x3)+
+    "\nsubject to:\n"+static_cast<std::string>(x1-x2+x3<=9)+"\n"+
+    static_cast<std::string>(-x1-x2+x3<=10)+"\n"+
+    static_cast<std::string>(-x1-x2-x3<=10)+"\nresults:\n"+
     "unbounded",
     static_cast<std::string>(solver));
 }
-
-TEST_F(SolverTester,slv_infeasible)
+TEST_F(SolverTester,slv_infeasible_print)
 {
-    auto solver=Solver{"Test"};
-    auto x0=Var{"x",0};
+    Solver solver{"Test"};
     auto x1=Var{"x",1};
-    solver.maximize(x0+x1);
-    solver.add_variable(x0);
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
     solver.add_variable(x1);
-    solver.add_constrait(x0-x1<=-1);
-    solver.add_constrait(x1-x0<=-1);
+    solver.add_variable(x2);
+    solver.add_variable(x3);
+    solver.maximize(3*x1-2*x2+x3);
+    solver.add_constrait(x1+x2+x3<=-9);
+    solver.add_constrait(3*x1+x2-x3<=18);
+    solver.add_constrait(x1-x2+x3<=7);
     
 
-    ASSERT_EQ(std::string{"Test\n"}+"maximize: "+static_cast<std::string>(x0+x1)+
-    "\nsubject to:\n"+static_cast<std::string>(x0-x1<=-1)+"\n"+
-    static_cast<std::string>(-x0+x1<=-1)+"\nresults:\n"+
+    ASSERT_EQ(std::string{"Test\n"}+"maximize "+static_cast<std::string>(3*x1-2*x2+x3)+
+    "\nsubject to:\n"+static_cast<std::string>(x1+x2+x3<=-9)+"\n"+
+    static_cast<std::string>(3*x1+x2-x3<=18)+"\n"+
+    static_cast<std::string>(x1-x2+x3<=7)+"\nresults:\n"+
     "unsolved",
     static_cast<std::string>(solver));
 
@@ -716,12 +780,16 @@ TEST_F(SolverTester,slv_infeasible)
     ASSERT_TRUE(solver.is_infeasible());
     ASSERT_FALSE(solver.is_unbounded());
 
-    ASSERT_EQ(std::string{"Test\n"}+"maximize: "+static_cast<std::string>(x0+x1)+
-    "\nsubject to:\n"+static_cast<std::string>(x0-x1<=-1)+"\n"+
-    static_cast<std::string>(-x0+x1<=-1)+"\nresults:\n"+
+   
+    ASSERT_EQ(std::string{"Test\n"}+"maximize "+static_cast<std::string>(3*x1-2*x2+x3)+
+    "\nsubject to:\n"+static_cast<std::string>(x1+x2+x3<=-9)+"\n"+
+    static_cast<std::string>(3*x1+x2-x3<=18)+"\n"+
+    static_cast<std::string>(x1-x2+x3<=7)+"\nresults:\n"+
     "infeasible",
     static_cast<std::string>(solver));
-}*/
+
+}
+
 
 TEST_F(SolverTester,slv_max_normal_3_3_pos)
 {

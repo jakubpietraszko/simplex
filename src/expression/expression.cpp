@@ -15,12 +15,10 @@ Monomial Var::operator/(const MultType&m)const
         return Monomial{1/m,*this};
     throw ZERO_DIVISION_ERROR{};
 }
-
 Monomial operator*(const MultType&m,const Var&var)
 {
     return var*m;
 }
-
 Expression Var::operator+(const Monomial&mon)const
 {
     Expression expr{};
@@ -37,7 +35,6 @@ Expression Var::operator+(const Var&var)const
     expr.simplify();
     return expr;
 }
-
 Expression Var::operator-(const Monomial&mon)const
 {
     Expression expr{};
@@ -54,21 +51,14 @@ Expression Var::operator-(const Var&var)const
     expr.simplify();
     return expr;
 }
-
 Monomial Var::operator-()const
 {
     return Monomial{-1,*this};
 }
-Var Var::operator+()const
-{
-    return *this;
-}
-
 Var::operator Monomial()const
 {
     return Monomial{1,*this};
 }
-
 Var::operator std::string()const
 {
     return name_+std::to_string(index_);
@@ -78,32 +68,18 @@ std::ostream& operator<<(std::ostream&os,const Var&var)
     os<<static_cast<std::string>(var);
     return os;
 }
-bool Var::operator==(const Var&rhs)const
-{
-    return name_==rhs.name_ && index_==rhs.index_;
-}
-bool Var::operator!=(const Var&rhs)const
-{
-    return !((*this)==rhs);
-}
 //Monomial
 
-Monomial Monomial::operator*(const MultType&m)const
-{
-    return Monomial{mult_*m,var_};
-}
 Monomial Monomial::operator/(const MultType&m)const
 {
     if(m)
         return Monomial{mult_/m,var_};
     throw ZERO_DIVISION_ERROR{};
 }
-
 Monomial operator*(const MultType&m,const Monomial&mon)
 {
     return mon*m;
 }
-
 Monomial& Monomial::operator*=(const MultType&m)
 {
     mult_*=m;
@@ -118,7 +94,6 @@ Monomial& Monomial::operator/=(const MultType&m)
     }
     throw ZERO_DIVISION_ERROR{};
 }
-
 Expression Monomial::operator+(const Monomial&mon)const
 {
     Expression expr{};
@@ -135,7 +110,6 @@ Expression Monomial::operator+(const Var&var)const
     expr.simplify();
     return expr;
 }
-
 Expression Monomial::operator-(const Monomial&mon)const
 {
     Expression expr{};
@@ -152,20 +126,10 @@ Expression Monomial::operator-(const Var&var)const
     expr.simplify();
     return expr;
 }
-
-Monomial Monomial::operator-()const
-{
-    return Monomial{-mult_,var_};
-}
-Monomial Monomial::operator+()const
-{
-    return *this;
-}
-/*
 Monomial::operator std::string()const
 {
     return std::to_string(mult_)+"*"+static_cast<std::string>(var_);
-}*/
+}
 std::ostream& operator<<(std::ostream&os,const Monomial&mnm)
 {
     os<<static_cast<std::string>(mnm);
@@ -324,7 +288,7 @@ void Expression::simplify()
 
     polynomial_=new_polynomial;
 }
-/*
+
 Expression::operator std::string()const
 {
     std::string ret{};
@@ -343,21 +307,14 @@ Expression::operator std::string()const
             ret+=static_cast<std::string>(polynomial_[i]);
         }
     }
-    else
-        return ret;
-}*/
+    return ret;
+}
 
 std::ostream& operator<<(std::ostream&os,const Expression&expr)
 {
     os<<static_cast<std::string>(expr);
     return os;
 }
-/*
-const std::vector<Monomial> Expression::get_polynomial()const
-{
-    return polynomial_;
-}
-*/
 Constrait Expression::operator<=(const MultType&m)const
 {
     return {*this,ConstraitType::LE,m};

@@ -211,7 +211,7 @@ Solver::operator std::string()const
         else if(ObjectType::MIN==objective_type_)
         {
             ret+="minimize ";
-            ret+=static_cast<std::string>(objective_);
+            ret+=static_cast<std::string>(-objective_);
             ret+="\n";
         }            
     }
@@ -231,6 +231,16 @@ Solver::operator std::string()const
 
     if(is_solved())
     {
+        if(is_unbounded())
+        {
+            ret+="unbounded";
+            return ret;
+        }
+        if(is_infeasible())
+        {
+            ret+="infeasible";
+            return ret;
+        }
         ret+="optimal value = ";
         ret+=std::to_string(get_vi());
         ret+="\n";
