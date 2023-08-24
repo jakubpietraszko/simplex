@@ -49,7 +49,7 @@ public:
     Constrait operator=(const MultType&m)const;
     
 private:
-    inline static IndexType count_=0;
+    inline static IndexType count_{};
     IndexType index_;
     std::string name_;
 };
