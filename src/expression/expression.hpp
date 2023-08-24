@@ -29,7 +29,7 @@ public:
     Var operator+()const;//--
 
     operator Monomial()const;//--
-    operator std::string()const{return {};}//--
+    operator std::string()const;//--
 
     bool operator==(const Var&rhs)const;//--
     bool operator!=(const Var&rhs)const;//--

@@ -68,11 +68,11 @@ Var::operator Monomial()const
 {
     return Monomial{1,*this};
 }
-/*
+
 Var::operator std::string()const
 {
     return name_+std::to_string(index_);
-}*/
+}
 std::ostream& operator<<(std::ostream&os,const Var&var)
 {
     os<<static_cast<std::string>(var);
