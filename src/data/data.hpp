@@ -26,3 +26,5 @@ struct ZERO_DIVISION_ERROR{};
 struct VAR_DOESNT_EXIST{};
 
 std::string change_precision(double str);
+
+bool dif(MultType a,MultType b);

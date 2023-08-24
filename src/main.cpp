@@ -13,13 +13,12 @@ int main()
     solver.add_variable(x1);
     solver.add_variable(x2);
 
-    solver.minimize(3*x1-2*x2);
+    solver.maximize(x1+x2);
     
     solver.add_constrait(x1+x2<=10);
-    solver.add_constrait(x1 -x2<=-1);
-    solver.add_constrait(2*x1 -x2<=-2);
+    solver.add_constrait(x1-x2<=-1);
+    solver.add_constrait(-x1+x2<=10);
 
     solver.solve();
-    solver.show_debug();
-
+    solver.show_results();
 }

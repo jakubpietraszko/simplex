@@ -12,3 +12,7 @@ cmake ..
 ```
 make
 ```
+
+```
+./src/main_executable
+```

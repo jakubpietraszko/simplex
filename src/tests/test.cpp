@@ -15,7 +15,6 @@ const IndexType NUM=100;
 const IndexType RANDOM_NUMBER=42;
 
 //Var
-/*
 TEST_F(VarTester,var_first_ctor_and_getters)
 {
     Var::reset();
@@ -24,7 +23,6 @@ TEST_F(VarTester,var_first_ctor_and_getters)
     ASSERT_EQ(0,var.get_index());
 
 }
-
 TEST_F(VarTester,var_second_ctor_and_getters)
 {
     Var::reset();
@@ -54,7 +52,6 @@ TEST_F(VarTester,var_eq_and_no_eq_operator)
     ASSERT_NE(var1,var3);
 
 }
-/*
 TEST_F(VarTester,var_cast_to_string)
 {
     Var::reset();
@@ -65,7 +62,6 @@ TEST_F(VarTester,var_cast_to_string)
         ASSERT_EQ(std::string{"x"}+std::to_string(i),
         static_cast<std::string>(vars[i]));
 }
-
 TEST_F(VarTester,var_cast_to_mnm)
 {
     Var::reset();
@@ -98,7 +94,6 @@ TEST_F(VarTester,var_plus_minus_unary)
     ASSERT_EQ(var,+var);
     ASSERT_EQ(mnm,-var);
 }
-
 TEST_F(VarTester,var_plus_and_minus_no_reference)
 {
     Var::reset();
@@ -491,8 +486,8 @@ TEST_F(ConstraitTester,ctr_inverse)
 }
 
 //Solver
-*/
-/*
+
+
 TEST_F(SolverTester,slv_ctor_and_getters)
 {
     auto solver=Solver{"Test"};
@@ -585,6 +580,7 @@ TEST_F(SolverTester,slv_max)
     static_cast<std::string>(solver));
 
 }
+
 TEST_F(SolverTester,slv_min)
 {
     auto solver=Solver{"Test"};
@@ -605,6 +601,7 @@ TEST_F(SolverTester,slv_min)
     static_cast<std::string>(solver));
 
 }
+/*
 TEST_F(SolverTester,slv_solved)
 {
     auto solver=Solver{"Test"};
@@ -645,6 +642,10 @@ TEST_F(SolverTester,slv_solved)
     static_cast<std::string>(solver));
     
 }
+*/
+
+/*
+
 TEST_F(SolverTester,slv_return_result)
 {
     auto solver=Solver{"Test"};
@@ -692,6 +693,7 @@ TEST_F(SolverTester,slv_unbounded)
     "unbounded",
     static_cast<std::string>(solver));
 }
+
 TEST_F(SolverTester,slv_infeasible)
 {
     auto solver=Solver{"Test"};
@@ -720,12 +722,7 @@ TEST_F(SolverTester,slv_infeasible)
     "infeasible",
     static_cast<std::string>(solver));
 }*/
-bool t(MultType a,MultType b)
-{
-    if(fabs(a-b)<0.001)
-        return true;
-    return false;
-}
+
 TEST_F(SolverTester,slv_max_normal_3_3_pos)
 {
     
@@ -744,7 +741,7 @@ TEST_F(SolverTester,slv_max_normal_3_3_pos)
     ASSERT_EQ(3,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(78,solver.get_vi()));
+    ASSERT_TRUE(dif(78,solver.get_vi()));
 
     ASSERT_EQ(true,solver.is_solved());
     ASSERT_EQ(false,solver.is_unbounded());
@@ -768,7 +765,7 @@ TEST_F(SolverTester,slv_max_normal_3_3_neg)
     ASSERT_EQ(3,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(0,solver.get_vi()));
+    ASSERT_TRUE(dif(0,solver.get_vi()));
 
     ASSERT_EQ(true,solver.is_solved());
     ASSERT_EQ(false,solver.is_unbounded());
@@ -794,7 +791,7 @@ TEST_F(SolverTester,slv_max_normal_2_3_pos)
     solver.solve();
     ASSERT_EQ(3,solver.get_results().size());
 
-    ASSERT_TRUE(t(16,solver.get_vi()));
+    ASSERT_TRUE(dif(16,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -819,7 +816,7 @@ TEST_F(SolverTester,slv_max_normal_2_3_neg)
     solver.solve();
     ASSERT_EQ(3,solver.get_results().size());
 
-    ASSERT_TRUE(t(0,solver.get_vi()));
+    ASSERT_TRUE(dif(0,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -845,7 +842,7 @@ TEST_F(SolverTester,slv_max_normal_3_2_pos)
     solver.solve();
     ASSERT_EQ(2,solver.get_results().size());
 
-    ASSERT_TRUE(t(14,solver.get_vi()));
+    ASSERT_TRUE(dif(14,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -870,7 +867,7 @@ TEST_F(SolverTester,slv_max_normal_3_2_neg)
     solver.solve();
     ASSERT_EQ(2,solver.get_results().size());
 
-    ASSERT_TRUE(t(0,solver.get_vi()));
+    ASSERT_TRUE(dif(0,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -896,7 +893,7 @@ TEST_F(SolverTester,slv_min_normal_3_3_pos)
     ASSERT_EQ(3,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(-18,solver.get_vi()));
+    ASSERT_TRUE(dif(-18,solver.get_vi()));
 
     ASSERT_EQ(true,solver.is_solved());
     ASSERT_EQ(false,solver.is_unbounded());
@@ -921,7 +918,7 @@ TEST_F(SolverTester,slv_min_normal_3_3_neg)
     ASSERT_EQ(3,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(0,solver.get_vi()));
+    ASSERT_TRUE(dif(0,solver.get_vi()));
 
     ASSERT_EQ(true,solver.is_solved());
     ASSERT_EQ(false,solver.is_unbounded());
@@ -946,7 +943,7 @@ TEST_F(SolverTester,slv_min_normal_2_3_pos)
     ASSERT_EQ(3,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(-36,solver.get_vi()));
+    ASSERT_TRUE(dif(-36,solver.get_vi()));
 
     ASSERT_EQ(true,solver.is_solved());
     ASSERT_EQ(false,solver.is_unbounded());
@@ -970,7 +967,7 @@ TEST_F(SolverTester,slv_min_normal_2_3_neg)
     ASSERT_EQ(3,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(0,solver.get_vi()));
+    ASSERT_TRUE(dif(0,solver.get_vi()));
 
     ASSERT_EQ(true,solver.is_solved());
     ASSERT_EQ(false,solver.is_unbounded());
@@ -994,7 +991,7 @@ TEST_F(SolverTester,slv_min_normal_3_2_pos)
     ASSERT_EQ(2,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(-18,solver.get_vi()));
+    ASSERT_TRUE(dif(-18,solver.get_vi()));
 
     ASSERT_EQ(true,solver.is_solved());
     ASSERT_EQ(false,solver.is_unbounded());
@@ -1018,7 +1015,7 @@ TEST_F(SolverTester,slv_min_normal_3_2_neg)
     ASSERT_EQ(2,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(0,solver.get_vi()));
+    ASSERT_TRUE(dif(0,solver.get_vi()));
 
     ASSERT_EQ(true,solver.is_solved());
     ASSERT_EQ(false,solver.is_unbounded());
@@ -1043,7 +1040,7 @@ TEST_F(SolverTester,slv_max_aux_3_3_pos)
 
     ASSERT_EQ(3,solver.get_results().size());
     ASSERT_EQ(8,solver.get_vi());
-    ASSERT_TRUE(t(8,solver.get_vi()));
+    ASSERT_TRUE(dif(8,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -1069,7 +1066,7 @@ TEST_F(SolverTester,slv_max_aux_3_3_neg)
 
     ASSERT_EQ(3,solver.get_results().size());
     ASSERT_EQ(-150,solver.get_vi());
-    ASSERT_TRUE(t(-150,solver.get_vi()));
+    ASSERT_TRUE(dif(-150,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -1095,7 +1092,7 @@ TEST_F(SolverTester,slv_max_aux_2_3_pos)
 
     ASSERT_EQ(3,solver.get_results().size());
     ASSERT_EQ(12.5,solver.get_vi());
-    ASSERT_TRUE(t(12.5,solver.get_vi()));
+    ASSERT_TRUE(dif(12.5,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -1120,7 +1117,7 @@ TEST_F(SolverTester,slv_max_aux_2_3_neg)
 
     ASSERT_EQ(3,solver.get_results().size());
 
-    ASSERT_TRUE(t(-50,solver.get_vi()));
+    ASSERT_TRUE(dif(-50,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -1144,7 +1141,7 @@ TEST_F(SolverTester,slv_max_aux_3_2_pos)
 
     ASSERT_EQ(2,solver.get_results().size());
     ASSERT_EQ(20,solver.get_vi());
-    ASSERT_TRUE(t(20,solver.get_vi()));
+    ASSERT_TRUE(dif(20,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -1169,7 +1166,7 @@ TEST_F(SolverTester,slv_max_aux_3_2_neg)
 
     ASSERT_EQ(2,solver.get_results().size());
     ASSERT_EQ(-20,solver.get_vi());
-    ASSERT_TRUE(t(-20,solver.get_vi()));
+    ASSERT_TRUE(dif(-20,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -1196,7 +1193,7 @@ TEST_F(SolverTester,slv_min_aux_3_3_pos)
     ASSERT_EQ(3,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(1,solver.get_vi()));
+    ASSERT_TRUE(dif(1,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -1224,7 +1221,7 @@ TEST_F(SolverTester,slv_min_aux_3_3_neg)
     ASSERT_EQ(3,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(-3.5,solver.get_vi()));
+    ASSERT_TRUE(dif(-3.5,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -1250,7 +1247,7 @@ TEST_F(SolverTester,slv_min_aux_2_3_pos)
     ASSERT_EQ(3,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(0.5,solver.get_vi()));
+    ASSERT_TRUE(dif(0.5,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -1276,7 +1273,7 @@ TEST_F(SolverTester,slv_min_aux_2_3_neg)
     ASSERT_EQ(3,solver.get_results().size());
 
 
-    ASSERT_TRUE(t(-9,solver.get_vi()));
+    ASSERT_TRUE(dif(-9,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -1303,7 +1300,7 @@ TEST_F(SolverTester,slv_min_aux_3_2_pos)
     ASSERT_EQ(2,solver.get_results().size());
 
     ASSERT_EQ(4,solver.get_vi());
-    ASSERT_TRUE(t(4,solver.get_vi()));
+    ASSERT_TRUE(dif(4,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
@@ -1327,7 +1324,7 @@ TEST_F(SolverTester,slv_min_aux_3_2_neg)
     ASSERT_EQ(2,solver.get_results().size());
 
     ASSERT_EQ(-20,solver.get_vi());
-    ASSERT_TRUE(t(-20,solver.get_vi()));
+    ASSERT_TRUE(dif(-20,solver.get_vi()));
 
 
     ASSERT_EQ(true,solver.is_solved());
