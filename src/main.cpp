@@ -6,18 +6,18 @@
 int main()
 {
    auto solver=Solver{"Test"};
-    auto x0=Var{"x",0};
-    auto x1=Var{"x",1};
-    auto x2=Var{"x",2};
-    solver.add_variable(x0);
+    auto x1=Var{"x"};
+    auto x2=Var{"x"};
+    auto x3=Var{"x"};
+
     solver.add_variable(x1);
     solver.add_variable(x2);
-    solver.maximize(x0);
-    solver.add_constrait(x0-x1+x2<=10);
-    solver.add_constrait(x0<=20);
-    solver.add_constrait(-x0+x1-x2<=30);
-    solver.add_constrait(x1<=5);
+    solver.add_variable(x3);
+    solver.maximize(x1+3*x2+2*x3);
+    solver.add_constrait(x1+x2+x3<=12);
+    solver.add_constrait(x1-x2+x3<=5);
+    solver.add_constrait(-x1+x2-x3<=5);
+    solver.add_constrait(x2<=1);
     solver.solve();
-    solver.show_debug();
     solver.show_results();
 }

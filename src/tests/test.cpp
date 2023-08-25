@@ -10,7 +10,6 @@ struct MonomialTester:public ::testing::Test{};
 struct ExpressionTester:public ::testing::Test{};
 struct SolverTester:public ::testing::Test{};
 
-
 const IndexType NUM=100;
 const IndexType RANDOM_NUMBER=42;
 const MultType RANDOM_NUMBER_double{static_cast<double>(RANDOM_NUMBER)};
@@ -253,7 +252,6 @@ TEST_F(MonomialTester,mnm_zero_division_error)
     },ZERO_DIVISION_ERROR);
 }
 
-
 //Expression
 
 TEST_F(ExpressionTester,exp_first_ctor_and_getters)
@@ -488,7 +486,6 @@ TEST_F(ConstraitTester,ctr_inverse)
 
 //Solver
 
-
 TEST_F(SolverTester,slv_ctor_and_getters)
 {
     auto solver=Solver{"Test"};
@@ -581,7 +578,6 @@ TEST_F(SolverTester,slv_max)
     static_cast<std::string>(solver));
 
 }
-
 TEST_F(SolverTester,slv_min)
 {
     auto solver=Solver{"Test"};
@@ -602,7 +598,6 @@ TEST_F(SolverTester,slv_min)
     static_cast<std::string>(solver));
 
 }
-
 TEST_F(SolverTester,slv_no_full_constrait)
 {
 
@@ -643,9 +638,6 @@ TEST_F(SolverTester,slv_no_full_constrait)
     ASSERT_TRUE(dif(20,solver.get_vi()));
     
 }
-
-
-
 TEST_F(SolverTester,slv_not_full_objective)
 {
 
@@ -687,10 +679,6 @@ TEST_F(SolverTester,slv_not_full_objective)
     ASSERT_TRUE(dif(15,solver.get_vi()));
     
 }
-
-
-
-
 TEST_F(SolverTester,slv_return_result)
 {
 
@@ -714,9 +702,6 @@ TEST_F(SolverTester,slv_return_result)
     ASSERT_EQ(2,res.size());
     ASSERT_TRUE(dif(14,3*res[0]+2*res[1]));
 }
-
-
-
 TEST_F(SolverTester,slv_unbounded_print)
 {
 
@@ -786,8 +771,6 @@ TEST_F(SolverTester,slv_infeasible_print)
     static_cast<std::string>(solver));
 
 }
-
-
 TEST_F(SolverTester,slv_max_normal_3_3_pos)
 {
     
