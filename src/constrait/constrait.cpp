@@ -20,7 +20,6 @@ Constrait& Constrait::operator*=(const MultType&m)
             c_type_=ConstraitType::GE;
     }
     bound_*=m;
-
     return *this;
 }
 /*

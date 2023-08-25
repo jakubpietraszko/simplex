@@ -91,7 +91,7 @@ public:
     
     operator std::string()const;
 
-    friend Monomial operator*(const MultType&m,const Monomial&mon);
+    friend Monomial operator*(const MultType&m,const Monomial&mon){return mon*m;}
     friend std::ostream& operator<<(std::ostream& os,const Monomial&mnm);
     
     friend Expression;
@@ -122,7 +122,7 @@ public:
     Expression operator/(const MultType&m)const;
     Expression& operator/=(const MultType&m);
 
-    Expression operator+()const;
+    Expression operator+()const{return *this;}
     Expression operator-()const;
 
     void simplify();
@@ -135,7 +135,7 @@ public:
     
     operator std::string()const;
 
-    friend Expression operator*(const MultType&m,const Expression&expr);
+    friend Expression operator*(const MultType&m,const Expression&expr){return expr*m;}
     friend std::ostream& operator<<(std::ostream&os,const Expression&expr);
 private:
     std::vector<Monomial>polynomial_{};

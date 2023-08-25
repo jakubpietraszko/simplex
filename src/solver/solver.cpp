@@ -59,21 +59,6 @@ auto Solver::chose_positive_c()const
 
 void Solver::solve()
 {
-    //A.resize(constraits_.size());
-
-    //for(auto i=0;i<constraits_.size();++i)
-     //   A[i].resize(vars_.size());
-
-    //for(auto j=0;j<constraits_.size();++j)
-     //   for(auto i=0;i<vars_.size();++i)
-     //       A[j][i]=constraits_[j].get_expr().get_polynomial()[i].get_mult();
-
-//    for(auto i=0;i<constraits_.size();++i)
-    //    b.push_back(constraits_[i].get_b_type());
-
-//    for(auto i=0;i<get_objective().get_polynomial().size();++i)
-  //      c.push_back(get_objective().get_polynomial()[i].get_mult());
-
     auto consts=objective_.get_polynomial();
     for(auto i=0;i<vars_.size();++i)
     {
@@ -89,15 +74,12 @@ void Solver::solve()
             c.push_back(0);
     }
     
-
     if(init()==false)
         return;
 
     results.resize(vars_.size());
     std::vector<MultType> delta{};
     delta.resize(b.size());
-
-
 
     while(in_c_is_positive())
     {
@@ -125,18 +107,10 @@ void Solver::solve()
             pivot(l,e);
     }
     for(auto i=0;i<vars_.size();++i)
-    {
         if(std::find(B.begin(),B.end(),i)!=B.end())
-        {
             results[i]=b[std::find(B.begin(),B.end(),i)-B.begin()];
-
-        }
         else
-        {
             results[i]=0;
-
-        }
-    }
         
     solved_=true;
     if(objective_type_==ObjectType::MIN && aux_==false)
