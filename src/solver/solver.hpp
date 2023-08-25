@@ -14,7 +14,7 @@ public:
     void minimize(Expression expr);
 
     auto add_variable(const Var&var){vars_.push_back(var);}
-    void add_constrait(Constrait constrait);
+    void add_constrait(const Constrait&constrait);
 
     void solve();
 
@@ -31,7 +31,7 @@ public:
     void show_debug()const;
     void show_results()const;
 
-    void pivot(IndexType a,IndexType b);
+    void pivot(IndexType l,IndexType e);
 
     auto get_vi()const{return (objective_type_==ObjectType::MIN&&aux_)?-vi:vi;}
 

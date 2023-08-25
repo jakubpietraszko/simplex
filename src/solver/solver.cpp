@@ -18,7 +18,7 @@ void Solver::minimize(Expression expr)
     entered_type_=true;
 }
 
-void Solver::add_constrait(Constrait constrait)
+void Solver::add_constrait(const Constrait&constrait)
 {
     std::vector<MultType>row;
     auto consts=constrait.get_expr().get_polynomial();
@@ -55,6 +55,7 @@ auto Solver::chose_positive_c()const
     for(auto i=0;i<c.size();++i)
         if(c[i]>0)
             return i;
+    return -1;
 }
 
 void Solver::solve()
@@ -191,9 +192,6 @@ bool Solver::init()
 
             N.pop_back();
 
-            old_N;
-            old_c;
-            auto new_c=c;
             c=old_c;
 
             for(auto i=0;i<old_c.size();++i)
@@ -204,9 +202,8 @@ bool Solver::init()
 
                     auto con=old_c[i];
                     auto index=std::find(B.begin(),B.end(),old_N[i])-B.begin();
-                    auto val=b[index];
 
-                    vi+=(con*val);
+                    vi+=(con*b[index]);
 
                     for(auto j=0;j<c.size();++j)
                         c[j]-=con*A[index][j];
@@ -289,7 +286,7 @@ void Solver::show_debug()const
     std::cout<<"A"<<std::endl;
     for(auto j=0;j<A.size();++j)
     {
-        for(auto i=0;i<A[0].size();++i)
+        for(auto i=0;i<A[j].size();++i)
             std::cout<<A[j][i]<<" ";
         std::cout<<std::endl;
     }
