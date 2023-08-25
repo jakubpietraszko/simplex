@@ -5,10 +5,10 @@
 
 int main()
 {
-   auto solver=Solver{"Test"};
-    auto x1=Var{"x"};
-    auto x2=Var{"x"};
-    auto x3=Var{"x"};
+    auto solver=Solver{"Test"};
+    auto x1=Var{"x",1};
+    auto x2=Var{"x",2};
+    auto x3=Var{"x",3};
 
     solver.add_variable(x1);
     solver.add_variable(x2);

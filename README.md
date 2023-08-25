@@ -16,3 +16,7 @@ make
 ```
 ./src/main_executable
 ```
+
+#How to enter data
+
+<img src=/img/example.png>
