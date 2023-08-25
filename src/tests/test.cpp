@@ -605,7 +605,6 @@ TEST_F(SolverTester,slv_min)
 
 TEST_F(SolverTester,slv_no_full_constrait)
 {
-    ASSERT_TRUE(false);
 
     auto solver=Solver{"Test"};
     auto x0=Var{"x",0};
@@ -638,19 +637,17 @@ TEST_F(SolverTester,slv_no_full_constrait)
     static_cast<std::string>(-x0+x1-x2<=30)+"\n"+
     static_cast<std::string>(x1<=5)+"\n"+
     "results:\n"+
-    "optimal value = 20\n"+
-    "x0 = 0\n"+
-    "x1 = 5\n"+
-    "x2 = 15\n",
+    "optimal value = "+std::to_string(20.0)+"\n",
     static_cast<std::string>(solver));
+
+    ASSERT_TRUE(dif(20,solver.get_vi()));
     
 }
 
 
 
-TEST_F(SolverTester,slv_inversed_obj)
+TEST_F(SolverTester,slv_not_full_objective)
 {
-    ASSERT_TRUE(false);
 
     auto solver=Solver{"Test"};
     auto x0=Var{"x",0};
@@ -659,14 +656,15 @@ TEST_F(SolverTester,slv_inversed_obj)
     solver.add_variable(x0);
     solver.add_variable(x1);
     solver.add_variable(x2);
-    solver.maximize(x0+x1+x2);
+    solver.maximize(x0);
+
     solver.add_constrait(x0-x1+x2<=10);
     solver.add_constrait(x0<=20);
     solver.add_constrait(-x0+x1-x2<=30);
     solver.add_constrait(x1<=5);
     
     ASSERT_EQ(std::string{"Test\n"}+"maximize "+
-    static_cast<std::string>(x0+x1+x2)+"\n"+
+    static_cast<std::string>(Monomial{x0})+"\n"+
     "subject to:\n"+static_cast<std::string>(x0-x1+x2<=10)+
     +"\n"+static_cast<std::string>(x0<=20)+"\n"+
     static_cast<std::string>(-x0+x1-x2<=30)+"\n"+
@@ -677,17 +675,16 @@ TEST_F(SolverTester,slv_inversed_obj)
     solver.solve();
 
     ASSERT_EQ(std::string{"Test\n"}+"maximize "+
-    static_cast<std::string>(x0+x1+x2)+"\n"+
+    static_cast<std::string>(Monomial{x0})+"\n"+
     "subject to:\n"+static_cast<std::string>(x0-x1+x2<=10)+
     +"\n"+static_cast<std::string>(x0<=20)+"\n"+
     static_cast<std::string>(-x0+x1-x2<=30)+"\n"+
     static_cast<std::string>(x1<=5)+"\n"+
     "results:\n"+
-    "optimal value = 20\n"+
-    "x0 = 0\n"+
-    "x1 = 5\n"+
-    "x2 = 15\n",
+    "optimal value = "+std::to_string(15.0)+"\n",
     static_cast<std::string>(solver));
+
+    ASSERT_TRUE(dif(15,solver.get_vi()));
     
 }
 

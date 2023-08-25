@@ -14,7 +14,7 @@ public:
     void minimize(Expression expr);
 
     auto add_variable(const Var&var){vars_.push_back(var);}
-    auto add_constrait(const Constrait&constrait){constraits_.push_back(constrait);}
+    void add_constrait(Constrait constrait);
 
     void solve();
 

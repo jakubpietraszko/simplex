@@ -68,6 +68,10 @@ std::ostream& operator<<(std::ostream&os,const Var&var)
     os<<static_cast<std::string>(var);
     return os;
 }
+Var::operator Expression()const
+{
+    return Expression{Monomial{*this}};
+}
 //Monomial
 
 Monomial Monomial::operator/(const MultType&m)const

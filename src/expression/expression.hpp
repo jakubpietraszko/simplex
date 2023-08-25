@@ -40,6 +40,7 @@ public:
     Constrait operator=(const MultType&m)const;
 
     operator Monomial()const;
+    operator Expression()const;
     operator std::string()const;
         
     friend Monomial operator*(const MultType&m,const Var&var);
