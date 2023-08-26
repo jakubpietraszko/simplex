@@ -36,7 +36,7 @@ void Solver::add_constrait(const Constrait&constrait)
             row.push_back(0);
     }
     A.push_back(row);
-    b.push_back(constrait.get_b_type());
+    b.push_back(constrait.get_b());
     constraits_.push_back(constrait);
 
     return ;

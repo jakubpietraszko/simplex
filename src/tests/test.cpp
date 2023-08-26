@@ -406,7 +406,7 @@ TEST_F(ConstraitTester,ctr_ctor_and_getters)
 
     ASSERT_EQ(static_cast<std::string>(expr),static_cast<std::string>(constrait.get_expr()));
     ASSERT_EQ(ConstraitType::EQ,constrait.get_c_type());
-    ASSERT_EQ(RANDOM_NUMBER,constrait.get_b_type());
+    ASSERT_EQ(RANDOM_NUMBER,constrait.get_b());
 }
 TEST_F(ConstraitTester,ctr_cast_to_string)
 {
@@ -418,13 +418,13 @@ TEST_F(ConstraitTester,ctr_cast_to_string)
     auto constrait2=Constrait{expr,ConstraitType::GE,RANDOM_NUMBER};
     auto constrait3=Constrait{expr,ConstraitType::LE,RANDOM_NUMBER};
     
-    ASSERT_EQ(static_cast<std::string>(constrait1.get_expr())+" = "+std::to_string(constrait1.get_b_type()),
+    ASSERT_EQ(static_cast<std::string>(constrait1.get_expr())+" = "+std::to_string(constrait1.get_b()),
     static_cast<std::string>(constrait1));
 
-    ASSERT_EQ(static_cast<std::string>(constrait2.get_expr())+" >= "+std::to_string(constrait2.get_b_type()),
+    ASSERT_EQ(static_cast<std::string>(constrait2.get_expr())+" >= "+std::to_string(constrait2.get_b()),
     static_cast<std::string>(constrait2));
 
-    ASSERT_EQ(static_cast<std::string>(constrait3.get_expr())+" <= "+std::to_string(constrait3.get_b_type()),
+    ASSERT_EQ(static_cast<std::string>(constrait3.get_expr())+" <= "+std::to_string(constrait3.get_b()),
     static_cast<std::string>(constrait3));
 }
 TEST_F(ConstraitTester,ctr_mult_operator_reference)

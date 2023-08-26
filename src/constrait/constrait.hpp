@@ -30,7 +30,7 @@ public:
 
     const auto& get_expr()const{return expr_;}
     const auto& get_c_type()const{return c_type_;}
-    const auto& get_b_type()const{return bound_;}
+    const auto& get_b()const{return bound_;}
 
     friend std::ostream& operator<<(std::ostream&os,const Constrait&constrait);
 
