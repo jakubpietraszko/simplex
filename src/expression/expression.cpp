@@ -65,8 +65,7 @@ Var::operator std::string()const
 }
 std::ostream& operator<<(std::ostream&os,const Var&var)
 {
-    os<<static_cast<std::string>(var);
-    return os;
+    return os<<static_cast<std::string>(var);
 }
 Var::operator Expression()const
 {
@@ -132,8 +131,7 @@ Monomial::operator std::string()const
 }
 std::ostream& operator<<(std::ostream&os,const Monomial&mnm)
 {
-    os<<static_cast<std::string>(mnm);
-    return os;
+    return os<<static_cast<std::string>(mnm);
 }
 bool Monomial::operator==(const Monomial&rhs)const
 {
@@ -247,11 +245,14 @@ void Expression::simplify()
 {
     if(polynomial_.size()==0)
         return;
+
     std::vector<Monomial>new_polynomial;
+
     std::sort(polynomial_.begin(),polynomial_.end(),
     [](const auto&p1,const auto&p2){
         return p1.var_.index_<p2.var_.index_;
     });
+
     MultType val{};
     Monomial curr=polynomial_[0];
     for(int i=0;i<polynomial_.size();++i){
@@ -265,8 +266,9 @@ void Expression::simplify()
             curr=polynomial_[i];
         }
     }
+
     new_polynomial.push_back(Monomial{val,curr.var_.name_,curr.var_.index_});
-    polynomial_=new_polynomial;
+    polynomial_=std::move(new_polynomial);
 }
 Expression::operator std::string()const
 {
@@ -290,8 +292,7 @@ Expression::operator std::string()const
 }
 std::ostream& operator<<(std::ostream&os,const Expression&expr)
 {
-    os<<static_cast<std::string>(expr);
-    return os;
+    return os<<static_cast<std::string>(expr);
 }
 Constrait Expression::operator<=(const MultType&m)const
 {
